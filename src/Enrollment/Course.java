@@ -21,7 +21,7 @@ public class Course {
         return name;
     }
 
-    public double getCredit_num() {
+    public int getCredit_num() {
         return credit_num;
     }
 
