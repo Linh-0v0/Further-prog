@@ -3,18 +3,17 @@ package Enrollment;
 import java.util.HashSet;
 
 public class Course {
-    private int id;
+    private String id;
     private String name;
-    private double credit_num;
-    private HashSet<Student> studentList;
+    private int credit_num;
 
-    public Course(int id, String name, double credit_num) {
+    public Course(String id, String name, int credit_num) {
         this.id = id;
         this.name = name;
         this.credit_num = credit_num;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
@@ -26,7 +25,7 @@ public class Course {
         return credit_num;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -34,11 +33,8 @@ public class Course {
         this.name = name;
     }
 
-    public void setCredit_num(double credit_num) {
+    public void setCredit_num(int credit_num) {
         this.credit_num = credit_num;
     }
 
-    public void addStudent(Student s) {
-        studentList.add(s);
-    }
 }
