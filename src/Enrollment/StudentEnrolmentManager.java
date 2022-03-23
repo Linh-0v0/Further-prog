@@ -1,19 +1,22 @@
 package Enrollment;
 
+import java.util.ArrayList;
+
 public interface StudentEnrolmentManager {
-    public void addStudent(String sid, String name, String date, String cid, String cname, int credit_num,
-                        String semester);
+    /* Add new enrolment */
+    public void addEnrolment(String sid, String name, String date, String cid, String cname, int credit_num, String semester);
 
-    public void deleteStudent();
+    /* Update enrolment of a student */
+    public void updateEnrolment(String idOrName, String cidOrName, String semester, int option);
 
-    public void addCourse();
+    /* Delete enrolment of a student */
+    public void deleteEnrolment(String sidOrName);
 
-    public void deleteCourse();
+    /* Get enrolment of a student */
+    public ArrayList<StudentEnrolment> getOne(String sidOrName);
 
-    public void updateEnrollOneSem(Student s, String semester);
+    /* Get all enrollment */
+    public ArrayList<StudentEnrolment> getAll();
 
-        public void getOne();
-
-    public void getAll();
 
 }

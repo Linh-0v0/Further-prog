@@ -1,0 +1,13 @@
+*Mon-03/22/2022
+    - hasn't added courseList
+    - need a courseList : populate at the start of program
+    - is wondering: "Prints all courses offered in 1 semester." - I guess this is a separate function from the
+    courseList.
+
+    -ask teacher:
+            a. The method: "add, update, delete, getOne, getAll" according to which attributes (student, course or
+            semester)?
+            b. Is the "add, update" methods the same as the funtionality listed in bold
+            sentence?
+
+            c. What we save in report CSV is what the console prints out, or the command the user calls?
