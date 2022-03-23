@@ -4,11 +4,7 @@ import java.util.ArrayList;
 
 public class StudentEnrolmentList implements StudentEnrolmentManager {
 
-    private ArrayList<StudentEnrolment> enrollList;
-
-    public StudentEnrolmentList() {
-        enrollList = new ArrayList<StudentEnrolment>();
-    }
+    ArrayList<StudentEnrolment> enrollList;
 
     @Override
     /* Add new enrolment */
@@ -29,6 +25,7 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
     /* Update enrolment of a student */
     public void updateEnrolment(String idOrName, String cidOrName, String semester, int option) {
         ArrayList<StudentEnrolment> filteredList = studentListFilter(idOrName, semester);
+        ArrayList<Course> courseList = allCourses();
         //Get student's info from the list
         String sid = filteredList.get(0).getStudent().getId();
         String sname = filteredList.get(0).getStudent().getName();
@@ -108,6 +105,7 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
         return enrollList;
     }
 
+    /*** ADDITIONAL METHODS ***/
     /* Filter out an enrollment list of the REQUIRED STUDENT and SEMESTER*/
     public ArrayList<StudentEnrolment> studentListFilter(String sidOrname, String semester) {
         ArrayList<StudentEnrolment> filteredList = new ArrayList<>();
@@ -145,6 +143,16 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
             }
         }
         return filteredList;
+    }
+
+    /* Filter out all COURSES from Enrollment list */
+    public ArrayList<Course> allCourses() {
+        ArrayList<Course> courseList = new ArrayList<>();
+        //add course from 'enrollList' to 'courseList'
+        for (StudentEnrolment s : enrollList) {
+            courseList.add(s.getCourse());
+        }
+        return courseList;
     }
 
     /* Print ALL COURSES for 1 STUDENT in 1 SEMESTER */

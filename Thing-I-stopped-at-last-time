@@ -1,4 +1,4 @@
-*Mon-03/22/2022
+*Tue-03/22/2022
     - hasn't added courseList
     - need a courseList : populate at the start of program
     - is wondering: "Prints all courses offered in 1 semester." - I guess this is a separate function from the
@@ -11,3 +11,9 @@
             sentence?
 
             c. What we save in report CSV is what the console prints out, or the command the user calls?
+
+*Wed-03/23/2022
+    - enrollList in 'CsvHandle', how and should I find way to allow only 1 object of CsvHandle (so that there won't be
+    multiple enrollLists)
+
+    - currently having problem with enrollList (does not know the connection of enrollList between classes).
