@@ -28,7 +28,7 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
     @Override
     /* Update enrolment of a student */
     public void updateEnrolment(String idOrName, String cidOrName, String semester, int option) {
-        ArrayList<StudentEnrolment> filteredList = enrollListFilter(idOrName, semester);
+        ArrayList<StudentEnrolment> filteredList = studentListFilter(idOrName, semester);
         //Get student's info from the list
         String sid = filteredList.get(0).getStudent().getId();
         String sname = filteredList.get(0).getStudent().getName();
@@ -42,7 +42,7 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
         }
         // 1: add new course , 2: delete course
         if (option == 1) {
-            if (isEnrolled == false) {
+            if (isEnrolled == true) {
                 System.out.println("The student is already enrolled in the course.");
             } else {
                 //check if the course's id/name is in the school's course list
@@ -108,15 +108,8 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
         return enrollList;
     }
 
-    public void printStudentsEnrolment(String sidOrName, String semester) {
-        ArrayList<StudentEnrolment> filteredList = enrollListFilter(sidOrName, semester);
-        //List all the courses of A Student in a Semester
-        for (StudentEnrolment s : filteredList) {
-            System.out.println(s);
-        }
-    }
-
-    public ArrayList<StudentEnrolment> enrollListFilter(String sidOrname, String semester) {
+    /* Filter out an enrollment list of the REQUIRED STUDENT and SEMESTER*/
+    public ArrayList<StudentEnrolment> studentListFilter(String sidOrname, String semester) {
         ArrayList<StudentEnrolment> filteredList = new ArrayList<>();
         //filter out a list according to student's name/id and semester.
         for (StudentEnrolment s : enrollList) {
@@ -127,5 +120,66 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
             }
         }
         return filteredList;
+    }
+
+    /* Filter out an enrollment list of the REQUIRED COURSES and SEMESTER*/
+    public ArrayList<StudentEnrolment> courseListFilter(String cidOrname, String semester) {
+        ArrayList<StudentEnrolment> filteredList = new ArrayList<>();
+        //filter out a list according to student's name/id and semester.
+        for (StudentEnrolment s : enrollList) {
+            if ((s.getCourse().getId() == cidOrname || s.getCourse().getName() == cidOrname)
+                    && s.getSemester() == semester) {
+                filteredList.add(s);
+            }
+        }
+        return filteredList;
+    }
+
+    /* Filter out an enrollment list of the REQUIRED SEMESTER */
+    public ArrayList<StudentEnrolment> semesterListFilter(String semester) {
+        ArrayList<StudentEnrolment> filteredList = new ArrayList<>();
+        //filter out a list according to student's name/id and semester.
+        for (StudentEnrolment s : enrollList) {
+            if (s.getSemester() == semester) {
+                filteredList.add(s);
+            }
+        }
+        return filteredList;
+    }
+
+    /* Print ALL COURSES for 1 STUDENT in 1 SEMESTER */
+    public void printCoursesOfStudent(String sidOrName, String semester) {
+        ArrayList<StudentEnrolment> filteredList = studentListFilter(sidOrName, semester);
+        //Get student's info from the list
+        String sid = filteredList.get(0).getStudent().getId();
+        String sname = filteredList.get(0).getStudent().getName();
+        System.out.printf("%s (%s) - Enrolled Courses:", sname, sid);
+        //List all the courses of A Student in a Semester
+        for (StudentEnrolment s : filteredList) {
+            System.out.println(s.getCourse());
+        }
+    }
+
+    /* Print ALL STUDENTS of 1 COURSES in 1 SEMESTER */
+    public void printStudentsOfCourse(String cidOrName, String semester) {
+        ArrayList<StudentEnrolment> filteredList = courseListFilter(cidOrName, semester);
+        //Get course's info from the list
+        String cid = filteredList.get(0).getCourse().getId();
+        String cname = filteredList.get(0).getCourse().getName();
+        System.out.printf("%s (%s) - Enrolled Students:", cid, cname);
+        //List all the students of A Course in a Semester
+        for (StudentEnrolment s : filteredList) {
+            System.out.println(s.getStudent());
+        }
+    }
+
+    /* Print ALL COURSES in 1 SEMESTER */
+    public void printCoursesOfSem(String semester) {
+        ArrayList<StudentEnrolment> filteredList = semesterListFilter(semester);
+        System.out.printf("%s 's Courses:", semester);
+        //List all the Courses of the Semester
+        for (StudentEnrolment s : filteredList) {
+            System.out.println(s.getCourse());
+        }
     }
 }
