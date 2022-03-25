@@ -1,6 +1,4 @@
-package Enrollment;
-
-import java.util.ArrayList;
+package Models;
 
 public class StudentEnrolment {
     private Student student;

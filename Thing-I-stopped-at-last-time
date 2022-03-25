@@ -1,4 +1,4 @@
-*Tue-03/22/2022
+*Tue-03/22/2022 : DONE
     - hasn't added courseList
     - need a courseList : populate at the start of program
     - is wondering: "Prints all courses offered in 1 semester." - I guess this is a separate function from the
@@ -17,3 +17,51 @@
     multiple enrollLists)
 
     - currently having problem with enrollList (does not know the connection of enrollList between classes).
+
+*Thu-03/24/2022
+    - improve validateInput -> hasNextInt
+    - change HashSet (unordered) -> TreeSet (but first search the difference btw them)
+
+*Fri
+    - "create Test" function in IntelliJ
+    - "create Test" with ticking the before & after class
+    - assertequal for testing 'return' method
+
+    - if it's void method: check state/size
+        + setup() , add() sth: check size: assertEquals("adding", 4, arr.size());
+
+    - change "add, delete"
+    - add Regex check for addEnrolment
+    - Student, Course, Sem is not allowed to added to the DB.
+
+    Stored code:
+                    //check if the course's id/name is in the school's course list
+                    for (Course c : courseList) {
+                        if (c.getId() == cidOrName || c.getName() == cidOrName) {
+                            //get Course's info
+                            String cid = c.getId();
+                            String cname = c.getName();
+                            Integer credit_num = c.getCredit_num();
+
+                            Student student = new Student(sid, sname, birthdate);
+                            Course course = new Course(cid, cname, credit_num);
+                            enrollList.add(new StudentEnrolment(student, course, semester));
+                            System.out.println("The student is now added to the course.");
+                            break;
+                        }
+                    }
+
+                   //check if the course's id/name is in the school's course list
+                    for (Course c : courseList) {
+                        if ((c.getId() == cidOrName || c.getName() == cidOrName)) {
+                            //get Course's info
+                            String cid = c.getId();
+                            String cname = c.getName();
+                            Integer credit_num = c.getCredit_num();
+
+                            //remove if the enrolment's course matches the input course
+                            enrollList.removeIf(s -> s.getCourse().getId() == cid);
+                            System.out.println("The student is now removed from the course.");
+                            break;
+                        }
+                    }

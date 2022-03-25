@@ -1,7 +1,4 @@
-package Enrollment;
-
-import java.util.Date;
-import java.util.HashSet;
+package Models;
 
 public class Student {
     private String id;

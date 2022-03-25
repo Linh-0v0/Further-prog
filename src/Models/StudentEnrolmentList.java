@@ -1,4 +1,7 @@
-package Enrollment;
+package Models;
+
+import Interface.StudentEnrolmentManager;
+import Utils.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -6,10 +9,11 @@ import java.util.HashSet;
 public class StudentEnrolmentList implements StudentEnrolmentManager {
 
     ArrayList<StudentEnrolment> enrollList;
+    HashSet<Student> studentList = allStudents();
     HashSet<Course> courseList = allCourses();
 
     @Override
-    /* Add new enrolment */
+    /* Add enrolment */
     public void addEnrolment(String sidOrName, String cidOrName, String semester) {
         String sid = "";
         String sname = "";
@@ -17,25 +21,24 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
         String cid = "";
         String cname = "";
         int credit_num = 0;
-        for (StudentEnrolment s : enrollList) {
-            if (s.getStudent().getId() == sidOrName || s.getStudent().getName() == sidOrName) {
-                //Get studentInfo
-                sid = s.getStudent().getId();
-                sname = s.getStudent().getName();
-                date = s.getStudent().getBirthday();
+        for (Student s : studentList) {
+            if (s.getId() == sidOrName || s.getName() == sidOrName) {
+                //Get studentInfo if the student is already in the database
+                sid = s.getId();
+                sname = s.getName();
+                date = s.getBirthday();
                 break;
             }
         }
         for (Course c : courseList) {
             if (c.getId() == cidOrName || c.getName() == cidOrName) {
-                //Get courseInfo
+                //Get courseInfo if the course in the database
                 cid = c.getId();
                 cname = c.getName();
                 credit_num = c.getCredit_num();
                 break;
             }
         }
-
         Student student = new Student(sid, sname, date);
         Course course = new Course(cid, cname, credit_num);
         StudentEnrolment newEnrolment = new StudentEnrolment(student, course, semester);
@@ -51,11 +54,8 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
     @Override
     /* Update enrolment of a student */
     public void updateEnrolment(String idOrName, String cidOrName, String semester, int option) {
+        //Get all the Course's Enrolments of The Student
         ArrayList<StudentEnrolment> filteredList = studentSemFilter(idOrName, semester);
-        //Get student's info from the list
-        String sid = filteredList.get(0).getStudent().getId();
-        String sname = filteredList.get(0).getStudent().getName();
-        String birthdate = filteredList.get(0).getStudent().getBirthday();
         boolean isEnrolled = false;
         //check if the student is already added to the Course
         for (StudentEnrolment s : filteredList) {
@@ -68,59 +68,69 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
             if (isEnrolled == true) {
                 System.out.println("The student is already enrolled in the course.");
             } else {
-                //check if the course's id/name is in the school's course list
-                for (Course c : courseList) {
-                    if (c.getId() == cidOrName || c.getName() == cidOrName) {
-                        //get Course's info
-                        String cid = c.getId();
-                        String cname = c.getName();
-                        Integer credit_num = c.getCredit_num();
-
-                        Student student = new Student(sid, sname, birthdate);
-                        Course course = new Course(cid, cname, credit_num);
-                        enrollList.add(new StudentEnrolment(student, course, semester));
-                        System.out.println("The student is now added to the course.");
-                        break;
-                    }
-                }
+                addEnrolment(idOrName, cidOrName, semester);
             }
         } else {
             if (isEnrolled == false) {
-                System.out.println("The student does not have this course.");
+                System.out.println("The student does not enroll in the course.");
             } else {
-                //check if the course's id/name is in the school's course list
-                for (Course c : courseList) {
-                    if ((c.getId() == cidOrName || c.getName() == cidOrName)) {
-                        //get Course's info
-                        String cid = c.getId();
-                        String cname = c.getName();
-                        Integer credit_num = c.getCredit_num();
+                deleteEnrolment(idOrName, cidOrName, semester);
+            }
+        }
+    }
 
-                        //remove if the enrolment's course matches the input course
-                        enrollList.removeIf(s -> s.getCourse().getId() == cid);
-                        System.out.println("The student is now removed from the course.");
-                        break;
-                    }
+    @Override
+    /* Delete course of a student */
+    public void deleteEnrolment(String sidOrName, String cidOrName, String semester) {
+        String sid = "";
+        String sname = "";
+        String date = "";
+        String cid = "";
+        String cname = "";
+        int credit_num = 0;
+        for (Student s : studentList) {
+            if (s.getId() == sidOrName || s.getName() == sidOrName) {
+                //Get studentInfo if the student is already in the database
+                sid = s.getId();
+                sname = s.getName();
+                date = s.getBirthday();
+                break;
+            }
+        }
+        for (Course c : courseList) {
+            if (c.getId() == cidOrName || c.getName() == cidOrName) {
+                //Get courseInfo if the course in the database
+                cid = c.getId();
+                cname = c.getName();
+                credit_num = c.getCredit_num();
+                break;
+            }
+        }
+        Student student = new Student(sid, sname, date);
+        Course course = new Course(cid, cname, credit_num);
+        StudentEnrolment newEnrolment = new StudentEnrolment(student, course, semester);
+
+        if (enrollList.contains(newEnrolment)) {
+            for (StudentEnrolment s : enrollList) {
+                if (s == newEnrolment) {
+                    enrollList.remove(s);
                 }
             }
+            //Delete course
+            System.out.println("The student has now left the course.");
+        } else {
+            System.out.println("The student does not enroll in the course.");
         }
     }
 
     @Override
-    /* Delete enrolment of a student */
-    public void deleteEnrolment(String sidOrName) {
-        for (StudentEnrolment s : enrollList) {
-            if (s.getStudent().getId() == sidOrName || s.getStudent().getName() == sidOrName) {
-                enrollList.remove(s);
-            }
-        }
-    }
-
-    @Override
-    public ArrayList<StudentEnrolment> getOne(String sidOrName) {
+    /* Get one enrolment */
+    public ArrayList<StudentEnrolment> getOne(String sidOrName, String cidOrName, String semester) {
         ArrayList<StudentEnrolment> aStudentEnrollList = new ArrayList<>();
         for (StudentEnrolment s : enrollList) {
-            if (s.getStudent().getId() == sidOrName || s.getStudent().getName() == sidOrName) {
+            if ((s.getStudent().getId() == sidOrName || s.getStudent().getName() == sidOrName)
+                && (s.getCourse().getId() == cidOrName || s.getCourse().getName() == cidOrName)
+                && s.getSemester() == semester) {
                 aStudentEnrollList.add(s);
             }
         }
@@ -184,8 +194,8 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
     }
 
     /* Filter out all STUDENTS from Enrolment list */
-    public ArrayList<Student> allStudents() {
-        ArrayList<Student> studentList = new ArrayList<>();
+    public HashSet<Student> allStudents() {
+        HashSet<Student> studentList = new HashSet<>();
         for (StudentEnrolment s : enrollList) {
             studentList.add(s.getStudent());
         }

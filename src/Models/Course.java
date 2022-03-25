@@ -1,6 +1,4 @@
-package Enrollment;
-
-import java.util.HashSet;
+package Models;
 
 public class Course {
     private String id;

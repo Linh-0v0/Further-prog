@@ -1,9 +1,13 @@
-package Enrollment;
+package DataProcessing;
+
+import Models.Course;
+import Models.Student;
+import Models.StudentEnrolment;
 
 import java.io.*;
 import java.util.ArrayList;
 
-public class CsvHandle {
+public class CsvRead {
     /* Read CSV line */
     /* Read and then return an enrollment list*/
     public static ArrayList<StudentEnrolment> readCSV(String fileName) {
