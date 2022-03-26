@@ -1,8 +1,10 @@
 package App;
-import java.util.Scanner;
+
 import DataProcessing.ValidateInput;
 import Models.StudentEnrolmentList;
 import Utils.DataAvailableCheck;
+
+import java.util.Scanner;
 
 public class StartProgram {
 
@@ -36,7 +38,8 @@ public class StartProgram {
             String cid = input.nextLine();
             cid = dataCheck.courseAvail(cid); //check if the course's in the DB
             System.out.print("Enter semester: ");
-            String sem = input.nextLine();
+            String sem = input.nextLine(); //checke if the semester's in the Db
+            sem = dataCheck.semAvail(sem);
             // 1: New Enrollment , 2(else): Update Enrollment
             if (opt == 1) {
                 enrollManager.addEnrolment(sid, cid, sem);
@@ -47,7 +50,6 @@ public class StartProgram {
                         "\n Enter 2 for Delete Courses of a Student in a Semester \nYour Choice: ");
                 enrollManager.updateEnrolment(sid, cid, sem, option);
             }
-
         /* Print the Enrolment Data. */
         } else {
             int yesNo = inputValidate.validateIntInput(twoChoices, "Would you like to see: \n 1: All courses for 1 student in 1" +
@@ -83,7 +85,7 @@ public class StartProgram {
             }
         }
 
-        System.out.print("Would you like to save in a Csv report?");
+        System.out.print("Would you like to save the above data in a Csv report?");
         int choice = inputValidate.validateIntInput(twoChoices, "1 is Yes, 2 is No. \nYour choice: ");
         if (choice == 1) {
 

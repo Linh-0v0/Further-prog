@@ -1,6 +1,7 @@
 package DataProcessing;
-import java.util.Scanner;
+
 import java.util.Arrays;
+import java.util.Scanner;
 
 public class ValidateInput {
     public int validateIntInput(int[] option, String msg) {

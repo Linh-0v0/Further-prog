@@ -1,7 +1,7 @@
 package Utils;
 
 public class RegexCheck {
-    public void sidCheck(String sid) {
-        String pattern= "";
-    }
+//    public boolean semRegex(String str) {
+//       String pattern = "";
+//    }
 }

@@ -7,7 +7,7 @@ import Models.StudentEnrolment;
 import java.io.*;
 import java.util.ArrayList;
 
-public class CsvRead {
+public class CsvHandle {
     /* Read CSV line */
     /* Read and then return an enrollment list*/
     public static ArrayList<StudentEnrolment> readCSV(String fileName) {
@@ -34,6 +34,16 @@ public class CsvRead {
         return enrollList;
     }
 
+    public static void writeToCsv(String fileName) {
+        File file = new File(fileName);
+        try {
+            FileWriter outputFile = new FileWriter(file);
+
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+    }
+
 
     private static Student createStudent(String[] metadata) {
        String id = metadata[0];
@@ -58,4 +68,6 @@ public class CsvRead {
         // return StudentEnrolment containing the metadata
         return new StudentEnrolment(student, course, semester);
     }
+
+
 }

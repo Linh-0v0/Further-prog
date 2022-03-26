@@ -1,7 +1,6 @@
 package Models;
 
 import Interface.StudentEnrolmentManager;
-import Utils.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -200,6 +199,15 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
             studentList.add(s.getStudent());
         }
         return studentList;
+    }
+
+    /* Filter out all semesters from Enrolment list */
+    public HashSet<String> allSems() {
+        HashSet<String> semList = new HashSet<>();
+        for (StudentEnrolment s : enrollList) {
+            semList.add(s.getSemester());
+        }
+        return semList;
     }
 
     /* Print ALL COURSES for 1 STUDENT in 1 SEMESTER */

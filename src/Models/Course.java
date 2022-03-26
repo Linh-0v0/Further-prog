@@ -23,16 +23,4 @@ public class Course {
         return credit_num;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setCredit_num(int credit_num) {
-        this.credit_num = credit_num;
-    }
-
 }

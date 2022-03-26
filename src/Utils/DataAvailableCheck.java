@@ -1,6 +1,8 @@
 package Utils;
 
-import Models.*;
+import Models.Course;
+import Models.Student;
+import Models.StudentEnrolmentList;
 
 import java.util.HashSet;
 import java.util.Scanner;
@@ -60,5 +62,30 @@ public class DataAvailableCheck extends StudentEnrolmentList {
             }
         } while (courseInDb == false);
         return cid;
+    }
+
+    /* Check if the course is in the Database */
+    public String semAvail(String semester) {
+        String sem = "";
+        boolean semInDb = false;
+        HashSet<String> semList = super.allSems();
+        Scanner input = new Scanner(System.in);
+        do {
+            for (String s : semList) {
+                if (s == semester) {
+                    //If the semester in the database
+                    sem = semester;
+                    semInDb = true;
+                    break;
+                }
+            }
+            //loop to ask for input if course is not in the database
+            if (semInDb == false) {
+                System.out.println("Semester is not in the database. Please enter again.");
+                System.out.print("Enter semester: ");
+                sem = input.nextLine();
+            }
+        } while (semInDb == false);
+        return sem;
     }
 }
