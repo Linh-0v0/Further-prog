@@ -12,8 +12,8 @@ import java.util.ArrayList;
 public class CsvHandle extends Menu {
 
     // To get file name/ path from the user input in Menu
-    public CsvHandle(String filePath) {
-        super(filePath);
+    public CsvHandle(String filePathRead, String filePathExport) {
+        super(filePathRead, filePathExport);
     }
 
     /* Read CSV line */
@@ -21,7 +21,7 @@ public class CsvHandle extends Menu {
     public static ArrayList<StudentEnrolment> readCSV() {
         ArrayList<StudentEnrolment> enrollList = new ArrayList<>();
         try {
-            File file = new File(filePath);
+            File file = new File(filePathRead);
             FileReader fr = new FileReader(file);
             BufferedReader br = new BufferedReader(fr);
             // read the first line from text file
@@ -42,7 +42,7 @@ public class CsvHandle extends Menu {
     }
 
     public static void writeToCsv(String[] metadata) {
-        File file = new File(filePath);
+        File file = new File(filePathExport);
         try {
             FileWriter outputFile = new FileWriter(file);
             CSVWriter writer = new CSVWriter(outputFile);

@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class ValidateInput {
+    /* Validate input option */
     public int validateIntInput(int[] option, String msg) {
         int opt = 0;
         Scanner input = new Scanner(System.in);

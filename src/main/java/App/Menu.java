@@ -7,15 +7,22 @@ import Utils.DataAvailableCheck;
 import java.util.Scanner;
 
 public class Menu {
-    public static String filePath;
+    public static String filePathRead;
+    public static String filePathExport;
 
-    public Menu(String filePath) {
-        this.filePath= filePath;
+    public Menu(String filePathRead, String filePathExport) {
+        this.filePathRead= filePathRead;
+        this.filePathExport = filePathExport;
     }
 
-    public static String fileToString() {
-        // Csv file exported path
-        return filePath + "CsvData/data-exported.csv";
+    public static String readCsvStrPath() {
+        //Default Csv path for populating data
+        return "CsvData/default.csv";
+    }
+
+    public static String exportedCsvStrPath() {
+        // Csv exported path
+        return filePathExport + "CsvData/data-exported.csv";
     }
 
     final protected static StudentEnrolmentList enrollManager = new StudentEnrolmentList();
@@ -33,9 +40,11 @@ public class Menu {
         System.out.println("Would you like to populate data from our default csv file or your file?");
         int csvOpt = inputValidate.validateIntInput(twoChoices, "Enter 1 for 'default csv', 2 for 'your file': ");
         switch (csvOpt) {
-            case 1:
-            case 2:
-                System.out.println();
+            case 1 -> filePathRead = readCsvStrPath();
+            case 2 -> {
+                System.out.print("Paste your Csv file path here: ");
+                filePathRead = input.nextLine();
+            }
         }
 
         System.out.println("Would you like to: ");
@@ -81,32 +90,29 @@ public class Menu {
                     " \n " + "1 is Yes, 2 is No. \nYour choice: ");
             if (yesNo == 1) {
                 optionPrint = inputValidate.validateIntInput(threeChoices, "Would you like to see: \n 1: All courses " +
-                        "for the " +
-                        "student in " +
-                        "1 " +
-                        "semester? \n 2. All students of 1 course in 1 semester? \n 3. All courses offered in 1 " +
-                        "semester? \n " +
-                        "Enter the option number: ");
+                        "for the student in 1 semester? \n 2. All students of 1 course in 1 semester? \n 3. All courses offered in 1 " +
+                        "semester? \n Enter the option number: ");
                 /* all courses for 1 student in 1 semester */
                 /* saveOption = 0: only printing */
-                if (optionPrint == 1) {
-                    System.out.print("Enter student ID or Name: ");
-                    sid = input.nextLine();
-                    System.out.print("Enter semester: ");
-                    sem = input.nextLine();
-                    enrollManager.printCoursesOfStudentSem(sid, sem, 0);
-                    /* all students of 1 course in 1 semester */
-                } else if (optionPrint == 2) {
-                    System.out.print("Enter course ID or Name: ");
-                    cid = input.nextLine();
-                    System.out.print("Enter semester: ");
-                    sem = input.nextLine();
-                    enrollManager.printStudentsOfCourseSem(cid, sem, 0);
-                    /* all courses offered in 1 semester */
-                } else {
-                    System.out.print("Enter semester: ");
-                    sem = input.nextLine();
-                    enrollManager.printCoursesOfSem(sem, 0);
+                switch (optionPrint) {
+                    case 1:
+                        System.out.print("Enter student ID or Name: ");
+                        sid = input.nextLine();
+                        System.out.print("Enter semester: ");
+                        sem = input.nextLine();
+                        enrollManager.printCoursesOfStudentSem(sid, sem, 0);
+                        /* all students of 1 course in 1 semester */
+                    case 2:
+                        System.out.print("Enter course ID or Name: ");
+                        cid = input.nextLine();
+                        System.out.print("Enter semester: ");
+                        sem = input.nextLine();
+                        enrollManager.printStudentsOfCourseSem(cid, sem, 0);
+                        /* all courses offered in 1 semester */
+                    case 3:
+                        System.out.print("Enter semester: ");
+                        sem = input.nextLine();
+                        enrollManager.printCoursesOfSem(sem, 0);
                 }
             } else {
                 endProgram(twoChoices);
@@ -116,17 +122,16 @@ public class Menu {
         System.out.print("Would you like to save the above data in a CSV report?");
         int choice = inputValidate.validateIntInput(twoChoices, "1 is Yes, 2 is No. \nYour choice: ");
         if (choice == 1) {
-            System.out.println("Where would you like to save CSV File?");
-            System.out.print("Paste the directory path here: ");
-            filePath = input.nextLine();
-            filePath = fileToString();
+            System.out.println("Exporting...");
+            filePathExport = input.nextLine();
+            filePathExport = exportedCsvStrPath();
             switch (optionPrint) {
                 /* saveOption = 1: save to csv file*/
                 case 1 -> enrollManager.printCoursesOfStudentSem(sid, sem, 1);
                 case 2 -> enrollManager.printStudentsOfCourseSem(cid, sem, 1);
                 case 3 -> enrollManager.printCoursesOfSem(sem, 1);
             }
-            System.out.println("Data has been saved to the designated CSV File.");
+            System.out.printf("Data has been saved to %s", exportedCsvStrPath());
         } else {
             endProgram(twoChoices);
         }
