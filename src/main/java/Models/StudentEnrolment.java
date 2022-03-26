@@ -24,4 +24,8 @@ public class StudentEnrolment {
         return semester;
     }
 
+    public String[] toStringArr() {
+        return new String[] {student.getId(), student.getName(), student.getBirthday(), course.getId(),
+                course.getName(), course.getCredit_num(), semester};
+    }
 }

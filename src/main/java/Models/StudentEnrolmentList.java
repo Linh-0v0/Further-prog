@@ -1,13 +1,14 @@
 package Models;
 
+import DataProcessing.CsvHandle;
 import Interface.StudentEnrolmentManager;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 
-public class StudentEnrolmentList implements StudentEnrolmentManager {
+public class StudentEnrolmentList implements StudentEnrolmentManager{
 
-    ArrayList<StudentEnrolment> enrollList;
+    ArrayList<StudentEnrolment> enrollList = CsvHandle.readCSV();
     HashSet<Student> studentList = allStudents();
     HashSet<Course> courseList = allCourses();
 
@@ -19,7 +20,7 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
         String date = "";
         String cid = "";
         String cname = "";
-        int credit_num = 0;
+        String credit_num = "";
         for (Student s : studentList) {
             if (s.getId() == sidOrName || s.getName() == sidOrName) {
                 //Get studentInfo if the student is already in the database
@@ -86,7 +87,7 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
         String date = "";
         String cid = "";
         String cname = "";
-        int credit_num = 0;
+        String credit_num = "";
         for (Student s : studentList) {
             if (s.getId() == sidOrName || s.getName() == sidOrName) {
                 //Get studentInfo if the student is already in the database
@@ -211,38 +212,66 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
     }
 
     /* Print ALL COURSES for 1 STUDENT in 1 SEMESTER */
-    public void printCoursesOfStudentSem(String sidOrName, String semester) {
+    public void printCoursesOfStudentSem(String sidOrName, String semester, int saveOption) {
         ArrayList<StudentEnrolment> filteredList = studentSemFilter(sidOrName, semester);
         //Get student's info from the list
         String sid = filteredList.get(0).getStudent().getId();
         String sname = filteredList.get(0).getStudent().getName();
         System.out.printf("%s (%s) - Enrolled Courses:", sname, sid);
-        //List all the courses of A Student in a Semester
-        for (StudentEnrolment s : filteredList) {
-            System.out.println(s.getCourse());
+        // saveOption = 0:only printing
+        if (saveOption == 0) {
+            //List all the courses of A Student in a Semester
+            for (StudentEnrolment s : filteredList) {
+                System.out.println(s.getCourse());
+            }
+        //saveOption = 1:Save to Csv file
+        } else if (saveOption == 1) {
+            for (StudentEnrolment s : filteredList) {
+                String[] data = {s.getCourse().getId(), s.getCourse().getName(), s.getCourse().getCredit_num()};
+                CsvHandle.writeToCsv(data);
+            }
         }
     }
 
     /* Print ALL STUDENTS of 1 COURSES in 1 SEMESTER */
-    public void printStudentsOfCourseSem(String cidOrName, String semester) {
+    public void printStudentsOfCourseSem(String cidOrName, String semester, int saveOption) {
         ArrayList<StudentEnrolment> filteredList = courseSemFilter(cidOrName, semester);
         //Get course's info from the list
         String cid = filteredList.get(0).getCourse().getId();
         String cname = filteredList.get(0).getCourse().getName();
         System.out.printf("%s (%s) - Enrolled Students:", cid, cname);
-        //List all the students of A Course in a Semester
-        for (StudentEnrolment s : filteredList) {
-            System.out.println(s.getStudent());
+        // saveOption = 0:only printing
+        if (saveOption == 0) {
+            //List all the students of A Course in a Semester
+            for (StudentEnrolment s : filteredList) {
+                System.out.println(s.getStudent());
+            }
+            //saveOption = 1:Save to Csv file
+        } else if (saveOption == 1) {
+            for (StudentEnrolment s : filteredList) {
+                String[] data = {s.getStudent().getId(), s.getStudent().getName(), s.getStudent().getBirthday()};
+                CsvHandle.writeToCsv(data);
+            }
         }
     }
 
     /* Print ALL COURSES in 1 SEMESTER */
-    public void printCoursesOfSem(String semester) {
+    public void printCoursesOfSem(String semester, int saveOption) {
         ArrayList<StudentEnrolment> filteredList = semFilter(semester);
         System.out.printf("%s 's Courses:", semester);
-        //List all the Courses of the Semester
-        for (StudentEnrolment s : filteredList) {
-            System.out.println(s.getCourse());
+        // saveOption = 0:only printing
+        if (saveOption == 0) {
+            //List all the Courses of the Semester
+            for (StudentEnrolment s : filteredList) {
+                System.out.println(s.getCourse());
+            }
+            //saveOption = 1:Save to Csv file
+        } else if (saveOption == 1) {
+            for (StudentEnrolment s : filteredList) {
+                String[] data = {s.getCourse().getId(), s.getCourse().getName(), s.getCourse().getCredit_num()};
+                CsvHandle.writeToCsv(data);
+            }
         }
+
     }
 }

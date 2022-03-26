@@ -3,9 +3,9 @@ package Models;
 public class Course {
     private String id;
     private String name;
-    private int credit_num;
+    private String credit_num;
 
-    public Course(String id, String name, int credit_num) {
+    public Course(String id, String name, String credit_num) {
         this.id = id;
         this.name = name;
         this.credit_num = credit_num;
@@ -19,8 +19,7 @@ public class Course {
         return name;
     }
 
-    public int getCredit_num() {
+    public String getCredit_num() {
         return credit_num;
     }
-
 }
