@@ -22,7 +22,7 @@ public class StudentEnrolmentList implements StudentEnrolmentManager{
         String cname = "";
         String credit_num = "";
         for (Student s : studentList) {
-            if (s.getId() == sidOrName || s.getName() == sidOrName) {
+            if (s.getId().equals(sidOrName) || s.getName().equals(sidOrName)) {
                 //Get studentInfo if the student is already in the database
                 sid = s.getId();
                 sname = s.getName();
@@ -31,7 +31,7 @@ public class StudentEnrolmentList implements StudentEnrolmentManager{
             }
         }
         for (Course c : courseList) {
-            if (c.getId() == cidOrName || c.getName() == cidOrName) {
+            if (c.getId().equals(cidOrName) || c.getName().equals(cidOrName)) {
                 //Get courseInfo if the course in the database
                 cid = c.getId();
                 cname = c.getName();
@@ -59,7 +59,7 @@ public class StudentEnrolmentList implements StudentEnrolmentManager{
         boolean isEnrolled = false;
         //check if the student is already added to the Course
         for (StudentEnrolment s : filteredList) {
-            if (s.getCourse().getId() == cidOrName || s.getCourse().getName() == cidOrName) {
+            if (s.getCourse().getId().equals(cidOrName) || s.getCourse().getName().equals(cidOrName)) {
                 isEnrolled = true;
             }
         }
@@ -89,7 +89,7 @@ public class StudentEnrolmentList implements StudentEnrolmentManager{
         String cname = "";
         String credit_num = "";
         for (Student s : studentList) {
-            if (s.getId() == sidOrName || s.getName() == sidOrName) {
+            if (s.getId().equals(sidOrName) || s.getName().equals(sidOrName)) {
                 //Get studentInfo if the student is already in the database
                 sid = s.getId();
                 sname = s.getName();
@@ -98,7 +98,7 @@ public class StudentEnrolmentList implements StudentEnrolmentManager{
             }
         }
         for (Course c : courseList) {
-            if (c.getId() == cidOrName || c.getName() == cidOrName) {
+            if (c.getId().equals(cidOrName) || c.getName().equals(cidOrName)) {
                 //Get courseInfo if the course in the database
                 cid = c.getId();
                 cname = c.getName();
@@ -128,9 +128,9 @@ public class StudentEnrolmentList implements StudentEnrolmentManager{
     public ArrayList<StudentEnrolment> getOne(String sidOrName, String cidOrName, String semester) {
         ArrayList<StudentEnrolment> aStudentEnrollList = new ArrayList<>();
         for (StudentEnrolment s : enrollList) {
-            if ((s.getStudent().getId() == sidOrName || s.getStudent().getName() == sidOrName)
-                && (s.getCourse().getId() == cidOrName || s.getCourse().getName() == cidOrName)
-                && s.getSemester() == semester) {
+            if ((s.getStudent().getId().equals(sidOrName) || s.getStudent().getName().equals(sidOrName))
+                && (s.getCourse().getId().equals(cidOrName) || s.getCourse().getName().equals(cidOrName))
+                && s.getSemester().equals(semester)) {
                 aStudentEnrollList.add(s);
             }
         }
@@ -149,9 +149,9 @@ public class StudentEnrolmentList implements StudentEnrolmentManager{
         ArrayList<StudentEnrolment> filteredList = new ArrayList<>();
         //filter out a list according to student's name/id and semester.
         for (StudentEnrolment s : enrollList) {
-            if ((s.getStudent().getId() == sidOrname
-                    || s.getStudent().getName() == sidOrname)
-                    && s.getSemester() == semester) {
+            if ((s.getStudent().getId().equals(sidOrname)
+                    || s.getStudent().getName().equals(sidOrname))
+                    && s.getSemester().equals(semester)) {
                 filteredList.add(s);
             }
         }
@@ -163,8 +163,8 @@ public class StudentEnrolmentList implements StudentEnrolmentManager{
         ArrayList<StudentEnrolment> filteredList = new ArrayList<>();
         //filter out a list according to student's name/id and semester.
         for (StudentEnrolment s : enrollList) {
-            if ((s.getCourse().getId() == cidOrname || s.getCourse().getName() == cidOrname)
-                    && s.getSemester() == semester) {
+            if ((s.getCourse().getId().equals(cidOrname) || s.getCourse().getName().equals(cidOrname))
+                    && s.getSemester().equals(semester)) {
                 filteredList.add(s);
             }
         }
@@ -176,7 +176,7 @@ public class StudentEnrolmentList implements StudentEnrolmentManager{
         ArrayList<StudentEnrolment> filteredList = new ArrayList<>();
         //filter out a list according to student's name/id and semester.
         for (StudentEnrolment s : enrollList) {
-            if (s.getSemester() == semester) {
+            if (s.getSemester().equals(semester)) {
                 filteredList.add(s);
             }
         }
@@ -218,14 +218,16 @@ public class StudentEnrolmentList implements StudentEnrolmentManager{
         String sid = filteredList.get(0).getStudent().getId();
         String sname = filteredList.get(0).getStudent().getName();
         System.out.printf("%s (%s) - Enrolled Courses:", sname, sid);
-        // saveOption = 0:only printing
-        if (saveOption == 0) {
+        if (filteredList.isEmpty()) { System.out.println("List is empty"); }
+        // saveOption = 1:only printing
+        if (saveOption == 1) {
+            System.out.println("List all courses below:");
             //List all the courses of A Student in a Semester
             for (StudentEnrolment s : filteredList) {
-                System.out.println(s.getCourse());
+                System.out.println(s.getCourse().toString());
             }
-        //saveOption = 1:Save to Csv file
-        } else if (saveOption == 1) {
+        //saveOption = 2:Save to Csv file
+        } else if (saveOption == 2) {
             for (StudentEnrolment s : filteredList) {
                 String[] data = {s.getCourse().getId(), s.getCourse().getName(), s.getCourse().getCredit_num()};
                 CsvHandle.writeToCsv(data);
@@ -240,14 +242,15 @@ public class StudentEnrolmentList implements StudentEnrolmentManager{
         String cid = filteredList.get(0).getCourse().getId();
         String cname = filteredList.get(0).getCourse().getName();
         System.out.printf("%s (%s) - Enrolled Students:", cid, cname);
-        // saveOption = 0:only printing
-        if (saveOption == 0) {
+        if (filteredList.isEmpty()) { System.out.println("List is empty"); }
+        // saveOption = 1:only printing
+        if (saveOption == 1) {
             //List all the students of A Course in a Semester
             for (StudentEnrolment s : filteredList) {
-                System.out.println(s.getStudent());
+                System.out.println(s.getStudent().toString());
             }
-            //saveOption = 1:Save to Csv file
-        } else if (saveOption == 1) {
+            //saveOption = 2:Save to Csv file
+        } else if (saveOption == 2) {
             for (StudentEnrolment s : filteredList) {
                 String[] data = {s.getStudent().getId(), s.getStudent().getName(), s.getStudent().getBirthday()};
                 CsvHandle.writeToCsv(data);
@@ -258,15 +261,16 @@ public class StudentEnrolmentList implements StudentEnrolmentManager{
     /* Print ALL COURSES in 1 SEMESTER */
     public void printCoursesOfSem(String semester, int saveOption) {
         ArrayList<StudentEnrolment> filteredList = semFilter(semester);
-        System.out.printf("%s 's Courses:", semester);
-        // saveOption = 0:only printing
-        if (saveOption == 0) {
+        System.out.printf("%s's Courses:\n", semester);
+        if (filteredList.isEmpty()) { System.out.println("List is empty"); }
+        // saveOption = 1:only printing
+        if (saveOption == 1) {
             //List all the Courses of the Semester
             for (StudentEnrolment s : filteredList) {
-                System.out.println(s.getCourse());
+                System.out.println(s.getCourse().toString());
             }
-            //saveOption = 1:Save to Csv file
-        } else if (saveOption == 1) {
+            //saveOption = 2:Save to Csv file
+        } else if (saveOption == 2) {
             for (StudentEnrolment s : filteredList) {
                 String[] data = {s.getCourse().getId(), s.getCourse().getName(), s.getCourse().getCredit_num()};
                 CsvHandle.writeToCsv(data);

@@ -30,8 +30,8 @@
     - if it's void method: check state/size
         + setup() , add() sth: check size: assertEquals("adding", 4, arr.size());
 
-    - change "add, delete"
-    - add Regex check for addEnrolment
+    - change "add, delete": DONE
+    - add Regex check for addEnrolment: NO NEED
     - Student, Course, Sem is not allowed to added to the DB.
 
     Stored code:
@@ -68,7 +68,7 @@
 
 *Sat-03/27/2022
    - Finish Writing CSV: DONE
-   - need to ask user ab populate data from different CSVfile
+   - need to ask user ab populate data from different CSVfile: DONE
    - add error msg for not being able to find the directory/ wrong csv format
 
 

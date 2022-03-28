@@ -6,19 +6,21 @@ import Models.Student;
 import Models.StudentEnrolment;
 import com.opencsv.CSVWriter;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileReader;
+import java.io.BufferedReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
-public class CsvHandle extends Menu {
-
-    // To get file name/ path from the user input in Menu
-    public CsvHandle(String filePathRead, String filePathExport) {
-        super(filePathRead, filePathExport);
+public class CsvHandle extends Menu{
+    public static String csvPathCheck() {
+        return filePathRead;
     }
-
     /* Read CSV line */
     /* Read and then return an enrollment list*/
     public static ArrayList<StudentEnrolment> readCSV() {
+        System.out.println(filePathRead);
         ArrayList<StudentEnrolment> enrollList = new ArrayList<>();
         try {
             File file = new File(filePathRead);
@@ -54,27 +56,16 @@ public class CsvHandle extends Menu {
         }
     }
 
-    private static Student createStudent(String[] metadata) {
-       String id = metadata[0];
-       String name = metadata[1];
-       String birthday = metadata[2];
-       // return Student containing the metadata
-        return new Student(id, name, birthday);
-    }
-
-    private static Course createCourse(String[] metadata) {
-        String id = metadata[3];
-        String name = metadata[4];
-        String credit_num = metadata[5];
-        // return Course containing the metadata
-        return new Course(id, name, credit_num);
-    }
-
     private static StudentEnrolment createEnrolment(String[] metadata) {
-        Student student = createStudent(metadata);
-        Course course = createCourse(metadata);
+        String sid = metadata[0];
+        String sname = metadata[1];
+        String birthday = metadata[2];
+        String cid = metadata[3];
+        String cname = metadata[4];
+        String credit_num = metadata[5];
         String semester = metadata[6];
         // return StudentEnrolment containing the metadata
-        return new StudentEnrolment(student, course, semester);
+        return new StudentEnrolment(new Student(sid, sname, birthday), new Course(cid, cname, credit_num), semester);
     }
+
 }

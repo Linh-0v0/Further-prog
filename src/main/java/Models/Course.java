@@ -22,4 +22,9 @@ public class Course {
     public String getCredit_num() {
         return credit_num;
     }
+
+    @Override
+    public String toString() {
+        return "Course{id='" + id + "', name='" + name + "', credit_num='" + credit_num + "'}";
+    }
 }

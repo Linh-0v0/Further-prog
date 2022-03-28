@@ -23,4 +23,12 @@ public class Student {
         return birthday;
     }
 
+    @Override
+    public String toString() {
+        return "Student{" +
+                "id='" + id +
+                "', name='" + name +
+                "', birthday='" + birthday +
+                "'}";
+    }
 }

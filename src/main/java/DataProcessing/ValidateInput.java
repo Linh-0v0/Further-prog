@@ -1,5 +1,6 @@
 package DataProcessing;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -9,6 +10,7 @@ public class ValidateInput {
         int opt = 0;
         Scanner input = new Scanner(System.in);
         boolean catchE = false;
+        boolean found = false;
         do {
             System.out.print(msg);
             try {
@@ -19,11 +21,14 @@ public class ValidateInput {
                 System.out.println("Invalid input. Please try again!\n");
                 input.nextLine(); //stop looping infinitely and wait for input
             }
-
-            if (!Arrays.asList(option).contains(opt)) {
-                System.out.println("Invalid input! Please try again!\n");
+            for (int o : option) {
+                if (o == opt) {
+                    found = true;
+                    break;
+                }
             }
-        } while (!Arrays.asList(option).contains(opt) || !catchE);
+            if (!found) {System.out.println("Invalid input. Please try again!\n");}
+        } while (!found || !catchE);
         return opt;
     }
 }
