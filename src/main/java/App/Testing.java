@@ -1,25 +1,59 @@
-package App;
-
-import DataProcessing.CsvHandle;
-import Models.StudentEnrolment;
-import Models.StudentEnrolmentList;
-import Utils.RegexCheck;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Scanner;
-
-/* JUST FILE TO TEST SOME FUNCTIONS*/
-public class Testing {
-//    static String filePath;
-final protected static StudentEnrolmentList enrollManager = new StudentEnrolmentList();
-
-    public static void main(String[] args) {
-        ArrayList<StudentEnrolment> enrollList = enrollManager.getAll();
-        if (enrollList.isEmpty()) {
-            System.out.println("enrollList in Menu is empty");
-        } else {
-            System.out.println("enrollList in Menu is populated");
-        }
-    }
-}
+//package App;
+//
+//import java.io.BufferedReader;
+//import java.io.File;
+//import java.io.IOException;
+//import java.io.InputStream;
+//import java.io.InputStreamReader;
+//import java.net.URL;
+//import java.nio.file.Files;
+//
+//class ReadFileFromResourcesUsingGetResource {
+//    public static void main(final String[] args) throws IOException
+//    {
+//        //Creating instance to avoid static member methods
+//        ReadFileFromResourcesUsingGetResource instance
+//                = new ReadFileFromResourcesUsingGetResource();
+//
+//        File file = instance.getResourceFile("CsvData/default.csv");
+//        instance.printFileContent(file);
+//
+////        file = instance.getResourceFile("default.csv");
+////        instance.printFileContent(file);
+//        //NOT FOUND
+//    }
+//
+//    private String getResourceFile(final String fileName)
+//    {
+//        URL url = this.getClass()
+//                .getClassLoader()
+//                .getResource(fileName);
+//
+//        if(url == null) {
+//            throw new IllegalArgumentException(fileName + " is not found 1");
+//        }
+//
+//        File file = new File(url.getFile());
+//
+//        return url.getFile();
+//    }
+//
+//    private void printFileContent(File file) throws IOException
+//    {
+//        String content = new String(Files.readAllBytes(file.toPath()));
+//        System.out.println(content);
+//    }
+//
+//    private void printFileContent(InputStream is) throws IOException
+//    {
+//        try (InputStreamReader isr = new InputStreamReader(is);
+//             BufferedReader br = new BufferedReader(isr);)
+//        {
+//            String line;
+//            while ((line = br.readLine()) != null) {
+//                System.out.println(line);
+//            }
+//            is.close();
+//        }
+//    }
+//}

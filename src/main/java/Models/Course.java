@@ -25,6 +25,6 @@ public class Course {
 
     @Override
     public String toString() {
-        return "Course{id='" + id + "', name='" + name + "', credit_num='" + credit_num + "'}";
+        return " "+"Course{id='" + id + "', name='" + name + "', credit_num='" + credit_num + "'}";
     }
 }

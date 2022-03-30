@@ -4,27 +4,19 @@ import App.Menu;
 import Models.Course;
 import Models.Student;
 import Models.StudentEnrolment;
+import Utils.GetResource;
 import com.opencsv.CSVWriter;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.BufferedReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 
 public class CsvHandle extends Menu{
-    public static String csvPathCheck() {
-        return filePathRead;
-    }
     /* Read CSV line */
     /* Read and then return an enrollment list*/
     public static ArrayList<StudentEnrolment> readCSV() {
-        System.out.println(filePathRead);
         ArrayList<StudentEnrolment> enrollList = new ArrayList<>();
         try {
-            File file = new File(filePathRead);
-            FileReader fr = new FileReader(file);
+            FileReader fr = new FileReader(filePathRead);
             BufferedReader br = new BufferedReader(fr);
             // read the first line from text file
             String line = br.readLine();
@@ -43,13 +35,12 @@ public class CsvHandle extends Menu{
         return enrollList;
     }
 
-    public static void writeToCsv(String[] metadata) {
-        File file = new File(filePathExport);
+    public static void writeToCsv(ArrayList<String[]> data) {
         try {
-            FileWriter outputFile = new FileWriter(file);
+            FileWriter outputFile = new FileWriter(filePathExport);
             CSVWriter writer = new CSVWriter(outputFile);
             //add data to csv
-            writer.writeNext(metadata);
+            writer.writeAll(data);
             writer.close();
         } catch (IOException ioe) {
             ioe.printStackTrace();
