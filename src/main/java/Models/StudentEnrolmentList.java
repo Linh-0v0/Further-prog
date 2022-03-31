@@ -4,9 +4,10 @@ import DataProcessing.CsvHandle;
 import Interface.StudentEnrolmentManager;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 
-public class StudentEnrolmentList implements StudentEnrolmentManager{
+public class StudentEnrolmentList implements StudentEnrolmentManager {
 
     ArrayList<StudentEnrolment> enrollList = CsvHandle.readCSV();
     HashSet<Student> studentList = allStudents();
@@ -44,10 +45,11 @@ public class StudentEnrolmentList implements StudentEnrolmentManager{
         StudentEnrolment newEnrolment = new StudentEnrolment(student, course, semester);
 
         if (enrollList.contains(newEnrolment)) {
-            System.out.println("The student has been enrolled!");
+            System.out.println("The student has already been enrolled!");
         } else {
             //New Enrollment is added to the Database
             enrollList.add(newEnrolment);
+            CsvHandle.addDeleteInCsv(enrollList);
         }
     }
 
@@ -66,13 +68,13 @@ public class StudentEnrolmentList implements StudentEnrolmentManager{
         // 1: add new course , 2: delete course
         if (option == 1) {
             if (isEnrolled == true) {
-                System.out.println("The student is already enrolled in the course.");
+                System.out.println("The student is already enrolled in the course and this semester.");
             } else {
                 addEnrolment(idOrName, cidOrName, semester);
             }
         } else {
             if (isEnrolled == false) {
-                System.out.println("The student does not enroll in the course.");
+                System.out.println("The student does not enroll in the course and this semester.");
             } else {
                 deleteEnrolment(idOrName, cidOrName, semester);
             }
@@ -88,6 +90,7 @@ public class StudentEnrolmentList implements StudentEnrolmentManager{
         String cid = "";
         String cname = "";
         String credit_num = "";
+        boolean notInCourse = false;
         for (Student s : studentList) {
             if (s.getId().equalsIgnoreCase(sidOrName) || s.getName().equalsIgnoreCase(sidOrName)) {
                 //Get studentInfo if the student is already in the database
@@ -109,14 +112,17 @@ public class StudentEnrolmentList implements StudentEnrolmentManager{
         Student student = new Student(sid, sname, date);
         Course course = new Course(cid, cname, credit_num);
         StudentEnrolment newEnrolment = new StudentEnrolment(student, course, semester);
-
-        if (enrollList.contains(newEnrolment)) {
-            for (StudentEnrolment s : enrollList) {
-                if (s == newEnrolment) {
-                    enrollList.remove(s);
-                }
+        for (StudentEnrolment s : enrollList) {
+            if (s.equals(newEnrolment)) {
+                notInCourse = true;
+                System.out.println("NOT IN COURSE TRUE");
+                enrollList.remove(s);
+                CsvHandle.addDeleteInCsv(enrollList);
             }
-            //Delete course
+        }
+
+        //Delete course
+        if (notInCourse == true) {
             System.out.println("The student has now left the course.");
         } else {
             System.out.println("The student does not enroll in the course.");
@@ -129,8 +135,8 @@ public class StudentEnrolmentList implements StudentEnrolmentManager{
         ArrayList<StudentEnrolment> aStudentEnrollList = new ArrayList<>();
         for (StudentEnrolment s : enrollList) {
             if ((s.getStudent().getId().equalsIgnoreCase(sidOrName) || s.getStudent().getName().equalsIgnoreCase(sidOrName))
-                && (s.getCourse().getId().equalsIgnoreCase(cidOrName) || s.getCourse().getName().equalsIgnoreCase(cidOrName))
-                && s.getSemester().equals(semester)) {
+                    && (s.getCourse().getId().equalsIgnoreCase(cidOrName) || s.getCourse().getName().equalsIgnoreCase(cidOrName))
+                    && s.getSemester().equals(semester)) {
                 aStudentEnrollList.add(s);
             }
         }
@@ -218,14 +224,16 @@ public class StudentEnrolmentList implements StudentEnrolmentManager{
         String sid = filteredList.get(0).getStudent().getId();
         String sname = filteredList.get(0).getStudent().getName();
         System.out.printf("* %s (%s)- Enrolled Courses:\n", sname, sid);
-        if (filteredList.isEmpty()) { System.out.println("List is empty"); }
+        if (filteredList.isEmpty()) {
+            System.out.println("List is empty");
+        }
         // saveOption = 1:only printing
         if (saveOption == 1) {
             //List all the courses of A Student in a Semester
             for (StudentEnrolment s : filteredList) {
                 System.out.println(s.getCourse().toString());
             }
-        //saveOption = 2:Save to Csv file
+            //saveOption = 2:Save to Csv file
         } else {
             ArrayList<String[]> data = new ArrayList<>();
             for (StudentEnrolment s : filteredList) {
@@ -243,7 +251,9 @@ public class StudentEnrolmentList implements StudentEnrolmentManager{
         String cid = filteredList.get(0).getCourse().getId();
         String cname = filteredList.get(0).getCourse().getName();
         System.out.printf("* %s (%s) - Enrolled Students:\n", cid, cname);
-        if (filteredList.isEmpty()) { System.out.println("List is empty"); }
+        if (filteredList.isEmpty()) {
+            System.out.println("List is empty");
+        }
         // saveOption = 1:only printing
         if (saveOption == 1) {
             //List all the students of A Course in a Semester
@@ -254,7 +264,8 @@ public class StudentEnrolmentList implements StudentEnrolmentManager{
         } else {
             ArrayList<String[]> data = new ArrayList<>();
             for (StudentEnrolment s : filteredList) {
-                String[] metadata = {s.getStudent().getId(), s.getStudent().getName(), s.getStudent().getBirthday()};
+                String[] metadata = {s.getStudent().getId(), s.getStudent().getName(),
+                        s.getStudent().getBirthday()};
                 data.add(metadata);
             }
             CsvHandle.writeToCsv(data);
@@ -265,7 +276,9 @@ public class StudentEnrolmentList implements StudentEnrolmentManager{
     public void printCoursesOfSem(String semester, int saveOption) {
         ArrayList<StudentEnrolment> filteredList = semFilter(semester);
         System.out.printf("* %s's Courses:\n", semester);
-        if (filteredList.isEmpty()) { System.out.println("List is empty"); }
+        if (filteredList.isEmpty()) {
+            System.out.println("List is empty");
+        }
         // saveOption = 1:only printing
         if (saveOption == 1) {
             //List all the Courses of the Semester

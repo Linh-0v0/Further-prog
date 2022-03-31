@@ -4,11 +4,14 @@ import App.Menu;
 import Models.Course;
 import Models.Student;
 import Models.StudentEnrolment;
-import Utils.GetResource;
+import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
+import com.opencsv.exceptions.CsvException;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class CsvHandle extends Menu{
     /* Read CSV line */
@@ -37,17 +40,29 @@ public class CsvHandle extends Menu{
 
     public static void writeToCsv(ArrayList<String[]> data) {
         try {
-            File f;
-            //addOrPrint = 1: trigger adding/updating data to csv
-            if (addOrPrint == 1) {
-                f = new File(filePathRead);
-            } else {
-                f = new File(filePathExport);
-            }
+            File f = new File(filePathExport);
             FileWriter outputFile = new FileWriter(f);
             CSVWriter writer = new CSVWriter(outputFile);
             //add data to csv
             writer.writeAll(data);
+            writer.close();
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+    }
+
+    public static void addDeleteInCsv(ArrayList<StudentEnrolment> data) {
+        try {
+            File f = new File(filePathRead);
+            FileWriter outputFile = new FileWriter(f);
+            CSVWriter writer = new CSVWriter(outputFile);
+
+            for(StudentEnrolment se: data){ ;
+                String[] row = {se.getStudent().getId(), se.getStudent().getName(), se.getStudent().getBirthday(),
+                        se.getCourse().getId(), se.getCourse().getName(), se.getCourse().getCredit_num(),
+                        se.getSemester()};
+                writer.writeNext(row);
+            }
             writer.close();
         } catch (IOException ioe) {
             ioe.printStackTrace();

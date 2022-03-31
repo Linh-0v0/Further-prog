@@ -4,7 +4,6 @@ import DataProcessing.ValidateInput;
 import Models.StudentEnrolment;
 import Models.StudentEnrolmentList;
 import Utils.DataAvailableCheck;
-import Utils.GetResource;
 import Utils.RegexCheck;
 
 import java.io.File;
@@ -15,23 +14,21 @@ import java.util.Scanner;
 public class Menu {
     public static String filePathRead;
     public static String filePathExport;
-    public static int addOrPrint;
 
     static {
         filePathRead = readCsvStrPath();
         filePathExport = exportedCsvStrPath();
-        addOrPrint = 0; //addOrPrint = 1: trigger adding/updating data to csv
     }
 
     public static String readCsvStrPath() {
         //Default Csv path for populating data
-        String file = new File("src/main/resources/default.csv").getAbsolutePath();
+        String file = new File("src/main/resources/CsvData/default.csv").getAbsolutePath();
         return file;
     }
 
     public static String exportedCsvStrPath() {
         // Csv exported path
-        String file = new File("src/main/resources/data-exported.csv").getAbsolutePath();
+        String file = new File("src/main/resources/CsvData/data-exported.csv").getAbsolutePath();
         return filePathExport;
     }
 
@@ -81,11 +78,6 @@ public class Menu {
             case 1 -> {
                 int opt = inputValidate.validateIntInput(twoChoices, "Enter 1 for New Enrollment or 2 for Update " +
                         "Enrollment: ");
-                addOrPrint = 1;
-                switch (opt) {
-                    case 1 -> System.out.println("***** Add new enrolment *****");
-                    case 2 -> System.out.println("***** Update enrolment *****");
-                }
                 System.out.print("Enter student ID or Name: ");
                 sid = input.nextLine();
                 sid = dataCheck.studentAvail(sid); //check if the student is already in the DB
@@ -97,12 +89,16 @@ public class Menu {
                 sem = dataCheck.semAvail(sem);
                 // 1: New Enrollment , 2(else): Update Enrollment
                 switch (opt) {
-                    case 1 -> enrollManager.addEnrolment(sid, cid, sem);
+                    case 1 -> {
+                        System.out.println("***** Add new enrolment *****");
+                        enrollManager.addEnrolment(sid, cid, sem);
+                    }
                     case 2 -> {
+                        System.out.println("***** Update enrolment *****");
                         //list all courses of a student in a semester
                         //saveOption = 1: only printing
                         enrollManager.printCoursesOfStudentSem(sid, sem, 1);
-                        int option = inputValidate.validateIntInput(twoChoices, "Enter 1 for Add Courses " +
+                        int option = inputValidate.validateIntInput(twoChoices, " Enter 1 for Add Courses " +
                                 "\n Enter 2 for Delete Courses of a Student in a Semester \nYour Choice: ");
                         enrollManager.updateEnrolment(sid, cid, sem, option);
                     }
@@ -145,10 +141,7 @@ public class Menu {
             }
         }
 
-        if (action == 1) {
-            //Add, Update
-            ;
-        } else {
+        if (action == 2) {
             //Print data
             System.out.print("\nWould you like to save the above data in a CSV report?");
             int choice = inputValidate.validateIntInput(twoChoices, "\n1 is Yes, 2 is No. \nYour choice: ");
@@ -186,6 +179,9 @@ public class Menu {
             } else {
                 endProgram(twoChoices);
             }
+        } else {
+            //Add/Update data, and when printing list is empty
+            ;
         }
     }
 
