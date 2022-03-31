@@ -15,24 +15,24 @@ import java.util.Scanner;
 public class Menu {
     public static String filePathRead;
     public static String filePathExport;
+    public static int addOrPrint;
 
     static {
         filePathRead = readCsvStrPath();
         filePathExport = exportedCsvStrPath();
+        addOrPrint = 0; //addOrPrint = 1: trigger adding/updating data to csv
     }
 
     public static String readCsvStrPath() {
         //Default Csv path for populating data
-        GetResource instance = new GetResource();
-        String file = instance.getResourceFile("CsvData/default.csv");
+        String file = new File("src/main/resources/default.csv").getAbsolutePath();
         return file;
     }
 
     public static String exportedCsvStrPath() {
         // Csv exported path
-        GetResource instance = new GetResource();
-        String file = instance.getResourceFile("CsvData/data-exported.csv");
-        return file;
+        String file = new File("src/main/resources/data-exported.csv").getAbsolutePath();
+        return filePathExport;
     }
 
     final protected static StudentEnrolmentList enrollManager = new StudentEnrolmentList();
@@ -81,6 +81,7 @@ public class Menu {
             case 1 -> {
                 int opt = inputValidate.validateIntInput(twoChoices, "Enter 1 for New Enrollment or 2 for Update " +
                         "Enrollment: ");
+                addOrPrint = 1;
                 switch (opt) {
                     case 1 -> System.out.println("***** Add new enrolment *****");
                     case 2 -> System.out.println("***** Update enrolment *****");
@@ -144,20 +145,47 @@ public class Menu {
             }
         }
 
-        System.out.print("\nWould you like to save the above data in a CSV report?");
-        int choice = inputValidate.validateIntInput(twoChoices, "\n1 is Yes, 2 is No. \nYour choice: ");
-        if (choice == 1) {
-            System.out.println("Exporting...");
-            filePathExport = exportedCsvStrPath();
-            switch (optionPrint) {
-                /* saveOption = 2: save to csv file*/
-                case 1 -> enrollManager.printCoursesOfStudentSem(sid, sem, 2);
-                case 2 -> enrollManager.printStudentsOfCourseSem(cid, sem, 2);
-                case 3 -> enrollManager.printCoursesOfSem(sem, 2);
-            }
-            System.out.printf("Data has been saved to:\n  %s", exportedCsvStrPath());
+        if (action == 1) {
+            //Add, Update
+            ;
         } else {
-            endProgram(twoChoices);
+            //Print data
+            System.out.print("\nWould you like to save the above data in a CSV report?");
+            int choice = inputValidate.validateIntInput(twoChoices, "\n1 is Yes, 2 is No. \nYour choice: ");
+            if (choice == 1) {
+                System.out.print("\nWould you like to save in the default path: 'resoucres/CsvData/data-exported' or " +
+                        "your own Csv Path?");
+                int csvChoice = inputValidate.validateIntInput(twoChoices, "\n1 is default path, 2 is your csv path. " +
+                        "\nYour choice: ");
+                switch (csvChoice) {
+                    case 1 -> {
+                    }
+                    case 2 -> {
+                        System.out.println("Paste the csv file path (no need to create the csv file) that you'd like " +
+                                "to " +
+                                "export to (e.g: D:\\directoryname\\testing\\abc.csv): ");
+                        filePathExport = input.nextLine();
+                        while (!RegexCheck.csvCheck(filePathExport)) {
+                            if (!RegexCheck.csvCheck(filePathExport)) {
+                                System.out.println("This is not a CSV file :(");
+                            }
+                            System.out.print("Paste your Csv file path: ");
+                            filePathExport = input.nextLine();
+                            System.out.println("Found your required path :)");
+                        }
+                    }
+                }
+                System.out.println("Exporting...");
+                switch (optionPrint) {
+                    /* saveOption = 2: save to csv file*/
+                    case 1 -> enrollManager.printCoursesOfStudentSem(sid, sem, 2);
+                    case 2 -> enrollManager.printStudentsOfCourseSem(cid, sem, 2);
+                    case 3 -> enrollManager.printCoursesOfSem(sem, 2);
+                }
+                System.out.printf("Data has been saved to:\n  %s", exportedCsvStrPath());
+            } else {
+                endProgram(twoChoices);
+            }
         }
     }
 

@@ -19,11 +19,11 @@ public class DataAvailableCheck extends StudentEnrolmentList {
         Scanner input = new Scanner(System.in);
         do {
             for (Student s : studentList) {
-                if (s.getId() == sidOrName || s.getName() == sidOrName) {
+                if (s.getId().equalsIgnoreCase(sidOrName) || s.getName().equalsIgnoreCase(sidOrName)) {
                     //Get studentInfo if the student is already in the database
                     sid = s.getId();
                     sname = s.getName();
-                    System.out.printf("Student Found: %s - %s", sid, sname);
+                    System.out.printf("Student Found: %s - %s \n", sid, sname);
                     enrolled = true;
                     break;
                 }
@@ -47,7 +47,7 @@ public class DataAvailableCheck extends StudentEnrolmentList {
         Scanner input = new Scanner(System.in);
         do {
             for (Course c : courseList) {
-                if (c.getId() == cidOrName || c.getName() == cidOrName) {
+                if (c.getId().equalsIgnoreCase(cidOrName) || c.getName().equalsIgnoreCase(cidOrName)) {
                     //If the course in the database
                     cid = c.getId();
                     courseInDb = true;
@@ -72,7 +72,7 @@ public class DataAvailableCheck extends StudentEnrolmentList {
         Scanner input = new Scanner(System.in);
         do {
             for (String s : semList) {
-                if (s == semester) {
+                if (s.equalsIgnoreCase(semester)) {
                     //If the semester in the database
                     sem = semester;
                     semInDb = true;

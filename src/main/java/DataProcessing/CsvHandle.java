@@ -37,7 +37,14 @@ public class CsvHandle extends Menu{
 
     public static void writeToCsv(ArrayList<String[]> data) {
         try {
-            FileWriter outputFile = new FileWriter(filePathExport);
+            File f;
+            //addOrPrint = 1: trigger adding/updating data to csv
+            if (addOrPrint == 1) {
+                f = new File(filePathRead);
+            } else {
+                f = new File(filePathExport);
+            }
+            FileWriter outputFile = new FileWriter(f);
             CSVWriter writer = new CSVWriter(outputFile);
             //add data to csv
             writer.writeAll(data);

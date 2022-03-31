@@ -22,7 +22,7 @@ public class StudentEnrolmentList implements StudentEnrolmentManager{
         String cname = "";
         String credit_num = "";
         for (Student s : studentList) {
-            if (s.getId().equals(sidOrName) || s.getName().equals(sidOrName)) {
+            if (s.getId().equalsIgnoreCase(sidOrName) || s.getName().equalsIgnoreCase(sidOrName)) {
                 //Get studentInfo if the student is already in the database
                 sid = s.getId();
                 sname = s.getName();
@@ -31,7 +31,7 @@ public class StudentEnrolmentList implements StudentEnrolmentManager{
             }
         }
         for (Course c : courseList) {
-            if (c.getId().equals(cidOrName) || c.getName().equals(cidOrName)) {
+            if (c.getId().equalsIgnoreCase(cidOrName) || c.getName().equalsIgnoreCase(cidOrName)) {
                 //Get courseInfo if the course in the database
                 cid = c.getId();
                 cname = c.getName();
@@ -59,7 +59,7 @@ public class StudentEnrolmentList implements StudentEnrolmentManager{
         boolean isEnrolled = false;
         //check if the student is already added to the Course
         for (StudentEnrolment s : filteredList) {
-            if (s.getCourse().getId().equals(cidOrName) || s.getCourse().getName().equals(cidOrName)) {
+            if (s.getCourse().getId().equalsIgnoreCase(cidOrName) || s.getCourse().getName().equalsIgnoreCase(cidOrName)) {
                 isEnrolled = true;
             }
         }
@@ -89,7 +89,7 @@ public class StudentEnrolmentList implements StudentEnrolmentManager{
         String cname = "";
         String credit_num = "";
         for (Student s : studentList) {
-            if (s.getId().equals(sidOrName) || s.getName().equals(sidOrName)) {
+            if (s.getId().equalsIgnoreCase(sidOrName) || s.getName().equalsIgnoreCase(sidOrName)) {
                 //Get studentInfo if the student is already in the database
                 sid = s.getId();
                 sname = s.getName();
@@ -98,7 +98,7 @@ public class StudentEnrolmentList implements StudentEnrolmentManager{
             }
         }
         for (Course c : courseList) {
-            if (c.getId().equals(cidOrName) || c.getName().equals(cidOrName)) {
+            if (c.getId().equalsIgnoreCase(cidOrName) || c.getName().equalsIgnoreCase(cidOrName)) {
                 //Get courseInfo if the course in the database
                 cid = c.getId();
                 cname = c.getName();
@@ -128,8 +128,8 @@ public class StudentEnrolmentList implements StudentEnrolmentManager{
     public ArrayList<StudentEnrolment> getOne(String sidOrName, String cidOrName, String semester) {
         ArrayList<StudentEnrolment> aStudentEnrollList = new ArrayList<>();
         for (StudentEnrolment s : enrollList) {
-            if ((s.getStudent().getId().equals(sidOrName) || s.getStudent().getName().equals(sidOrName))
-                && (s.getCourse().getId().equals(cidOrName) || s.getCourse().getName().equals(cidOrName))
+            if ((s.getStudent().getId().equalsIgnoreCase(sidOrName) || s.getStudent().getName().equalsIgnoreCase(sidOrName))
+                && (s.getCourse().getId().equalsIgnoreCase(cidOrName) || s.getCourse().getName().equalsIgnoreCase(cidOrName))
                 && s.getSemester().equals(semester)) {
                 aStudentEnrollList.add(s);
             }
@@ -149,8 +149,8 @@ public class StudentEnrolmentList implements StudentEnrolmentManager{
         ArrayList<StudentEnrolment> filteredList = new ArrayList<>();
         //filter out a list according to student's name/id and semester.
         for (StudentEnrolment s : enrollList) {
-            if ((s.getStudent().getId().equals(sidOrname)
-                    || s.getStudent().getName().equals(sidOrname))
+            if ((s.getStudent().getId().equalsIgnoreCase(sidOrname)
+                    || s.getStudent().getName().equalsIgnoreCase(sidOrname))
                     && s.getSemester().equals(semester)) {
                 filteredList.add(s);
             }
@@ -163,7 +163,7 @@ public class StudentEnrolmentList implements StudentEnrolmentManager{
         ArrayList<StudentEnrolment> filteredList = new ArrayList<>();
         //filter out a list according to student's name/id and semester.
         for (StudentEnrolment s : enrollList) {
-            if ((s.getCourse().getId().equals(cidOrname) || s.getCourse().getName().equals(cidOrname))
+            if ((s.getCourse().getId().equalsIgnoreCase(cidOrname) || s.getCourse().getName().equalsIgnoreCase(cidOrname))
                     && s.getSemester().equals(semester)) {
                 filteredList.add(s);
             }
@@ -277,6 +277,7 @@ public class StudentEnrolmentList implements StudentEnrolmentManager{
             ArrayList<String[]> data = new ArrayList<>();
             for (StudentEnrolment s : filteredList) {
                 String[] metadata = {s.getCourse().getId(), s.getCourse().getName(), s.getCourse().getCredit_num()};
+                data.add(metadata);
             }
             CsvHandle.writeToCsv(data);
         }
