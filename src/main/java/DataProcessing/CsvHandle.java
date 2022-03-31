@@ -40,9 +40,11 @@ public class CsvHandle extends Menu{
 
     public static void writeToCsv(ArrayList<String[]> data) {
         try {
-            File f = new File(filePathExport);
-            FileWriter outputFile = new FileWriter(f);
-            CSVWriter writer = new CSVWriter(outputFile);
+            FileWriter outputFile = new FileWriter(filePathExport, true);
+            CSVWriter writer = new CSVWriter(outputFile, CSVWriter.DEFAULT_SEPARATOR,
+                    CSVWriter.NO_QUOTE_CHARACTER,
+                    CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+                    CSVWriter.DEFAULT_LINE_END);
             //add data to csv
             writer.writeAll(data);
             writer.close();
@@ -51,18 +53,15 @@ public class CsvHandle extends Menu{
         }
     }
 
-    public static void addDeleteInCsv(ArrayList<StudentEnrolment> data) {
+    public static void addDeleteInCsv(String[] data) {
         try {
-            File f = new File(filePathRead);
-            FileWriter outputFile = new FileWriter(f);
-            CSVWriter writer = new CSVWriter(outputFile);
+            FileWriter outputFile = new FileWriter(filePathRead, true);
+            CSVWriter writer = new CSVWriter(outputFile, CSVWriter.DEFAULT_SEPARATOR,
+                    CSVWriter.NO_QUOTE_CHARACTER,
+                    CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+                    CSVWriter.DEFAULT_LINE_END);
 
-            for(StudentEnrolment se: data){ ;
-                String[] row = {se.getStudent().getId(), se.getStudent().getName(), se.getStudent().getBirthday(),
-                        se.getCourse().getId(), se.getCourse().getName(), se.getCourse().getCredit_num(),
-                        se.getSemester()};
-                writer.writeNext(row);
-            }
+            writer.writeNext(data);
             writer.close();
         } catch (IOException ioe) {
             ioe.printStackTrace();

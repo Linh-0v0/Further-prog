@@ -78,29 +78,40 @@ public class Menu {
             case 1 -> {
                 int opt = inputValidate.validateIntInput(twoChoices, "Enter 1 for New Enrollment or 2 for Update " +
                         "Enrollment: ");
-                System.out.print("Enter student ID or Name: ");
-                sid = input.nextLine();
-                sid = dataCheck.studentAvail(sid); //check if the student is already in the DB
-                System.out.print("Enter course ID or Name: ");
-                cid = input.nextLine();
-                cid = dataCheck.courseAvail(cid); //check if the course's in the DB
-                System.out.print("Enter semester: ");
-                sem = input.nextLine(); //checke if the semester's in the Db
-                sem = dataCheck.semAvail(sem);
                 // 1: New Enrollment , 2(else): Update Enrollment
                 switch (opt) {
                     case 1 -> {
                         System.out.println("***** Add new enrolment *****");
+                        System.out.print("Enter student ID or Name: ");
+                        sid = input.nextLine();
+                        sid = dataCheck.studentAvail(sid); //check if the student is already in the DB
+                        System.out.print("Enter course ID or Name: ");
+                        cid = input.nextLine();
+                        cid = dataCheck.courseAvail(cid); //check if the course's in the DB
+                        System.out.print("Enter semester: ");
+                        sem = input.nextLine(); //checke if the semester's in the Db
+                        sem = dataCheck.semAvail(sem);
                         enrollManager.addEnrolment(sid, cid, sem);
+                        break;
                     }
                     case 2 -> {
                         System.out.println("***** Update enrolment *****");
+                        int option = inputValidate.validateIntInput(twoChoices, " Enter 1 for Add Courses " +
+                                "\n Enter 2 for Delete Courses of a Student in a Semester \nYour Choice: ");
+                        System.out.print("Enter student ID or Name: ");
+                        sid = input.nextLine();
+                        sid = dataCheck.studentAvail(sid); //check if the student is already in the DB
+                        System.out.print("Enter course ID or Name: ");
+                        cid = input.nextLine();
+                        cid = dataCheck.courseAvail(cid); //check if the course's in the DB
+                        System.out.print("Enter semester: ");
+                        sem = input.nextLine(); //checke if the semester's in the Db
+                        sem = dataCheck.semAvail(sem);
                         //list all courses of a student in a semester
                         //saveOption = 1: only printing
                         enrollManager.printCoursesOfStudentSem(sid, sem, 1);
-                        int option = inputValidate.validateIntInput(twoChoices, " Enter 1 for Add Courses " +
-                                "\n Enter 2 for Delete Courses of a Student in a Semester \nYour Choice: ");
                         enrollManager.updateEnrolment(sid, cid, sem, option);
+                        break;
                     }
                 }
             }
