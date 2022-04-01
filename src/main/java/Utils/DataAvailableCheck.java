@@ -104,7 +104,7 @@ public class DataAvailableCheck extends StudentEnrolmentList {
                 System.out.print("Enter semester: ");
                 sem = input.nextLine();
                 for (String s : semList) {
-                    if (s.equalsIgnoreCase(sem)) {
+                    if (sem.equalsIgnoreCase(s)) {
                         //If the semester in the database
                         sem = s;
                         semInDb = true;

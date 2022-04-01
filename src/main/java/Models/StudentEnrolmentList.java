@@ -1,5 +1,6 @@
 package Models;
 
+import App.Menu;
 import DataProcessing.CsvHandle;
 import Interface.StudentEnrolmentManager;
 
@@ -22,6 +23,7 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
         String cid = "";
         String cname = "";
         String credit_num = "";
+        boolean isEnrolled = false;
         for (Student s : studentList) {
             if (s.getId().equalsIgnoreCase(sidOrName) || s.getName().equalsIgnoreCase(sidOrName)) {
                 //Get studentInfo if the student is already in the database
@@ -44,14 +46,56 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
         Course course = new Course(cid, cname, credit_num);
         StudentEnrolment newEnrolment = new StudentEnrolment(student, course, semester);
 
-        if (enrollList.contains(newEnrolment)) {
-            System.out.println("The student has already been enrolled!");
-        } else {
+        for (StudentEnrolment s : enrollList) {
+            if (sid == s.getStudent().getId() && cid == s.getCourse().getId() && s.getSemester() == semester) {
+                System.out.println("The student has already been enrolled!");
+                isEnrolled = true;
+                break;
+            }
+        }
+        if (isEnrolled == false) {
             //New Enrollment is added to the Database
             enrollList.add(newEnrolment);
-            String[] str = {student.getId(), student.getName(), student.getBirthday(), course.getId(),
-                    course.getName(), course.getCredit_num(), semester};
-            CsvHandle.addDeleteInCsv(str);
+            for (StudentEnrolment s : enrollList) {
+                System.out.println(s.toString());
+            }
+        }
+    }
+
+    @Override
+    /* Delete course of a student */
+    public void deleteEnrolment(String sidOrName, String cidOrName, String semester) {
+        String sid = "";
+        String cid = "";
+        boolean notEnrolled = false;
+        for (Student s : studentList) {
+            if (s.getId().equalsIgnoreCase(sidOrName) || s.getName().equalsIgnoreCase(sidOrName)) {
+                //Get studentInfo if the student is already in the database
+                sid = s.getId();
+                break;
+            }
+        }
+        for (Course c : courseList) {
+            if (c.getId().equalsIgnoreCase(cidOrName) || c.getName().equalsIgnoreCase(cidOrName)) {
+                //Get courseInfo if the course in the database
+                cid = c.getId();
+                break;
+            }
+        }
+        for (StudentEnrolment s : enrollList) {
+            if ((sid.equalsIgnoreCase(s.getStudent().getId())) && (cid.equalsIgnoreCase(s.getCourse().getId()))
+                    && (semester.equalsIgnoreCase(s.getSemester()))) {
+                enrollList.remove(s);
+                System.out.println("The student has now left the course.");
+                notEnrolled = true;
+                break;
+            }
+        }
+        for (StudentEnrolment s : enrollList) {
+            System.out.println(s.toString());
+        }
+        if (notEnrolled == false) {
+            System.out.println("The student has not enrolled in this course.");
         }
     }
 
@@ -84,57 +128,13 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
     }
 
     @Override
-    /* Delete course of a student */
-    public void deleteEnrolment(String sidOrName, String cidOrName, String semester) {
-        String sid = "";
-        String sname = "";
-        String date = "";
-        String cid = "";
-        String cname = "";
-        String credit_num = "";
-        for (Student s : studentList) {
-            if (s.getId().equalsIgnoreCase(sidOrName) || s.getName().equalsIgnoreCase(sidOrName)) {
-                //Get studentInfo if the student is already in the database
-                sid = s.getId();
-                sname = s.getName();
-                date = s.getBirthday();
-                break;
-            }
-        }
-        for (Course c : courseList) {
-            if (c.getId().equalsIgnoreCase(cidOrName) || c.getName().equalsIgnoreCase(cidOrName)) {
-                //Get courseInfo if the course in the database
-                cid = c.getId();
-                cname = c.getName();
-                credit_num = c.getCredit_num();
-                break;
-            }
-        }
-        Student student = new Student(sid, sname, date);
-        Course course = new Course(cid, cname, credit_num);
-        StudentEnrolment newEnrolment = new StudentEnrolment(student, course, semester);
-        for (StudentEnrolment s : enrollList) {
-            //somehow this does not work :((
-            if (enrollList.contains(newEnrolment)) {
-                enrollList.remove(s);
-                String[] str = {student.getId(), student.getName(), student.getBirthday(), course.getId(),
-                        course.getName(), course.getCredit_num(), semester};
-                CsvHandle.addDeleteInCsv(str);
-                System.out.println("The student has now left the course.");
-
-                break;
-            }
-        }
-    }
-
-    @Override
     /* Get one enrolment */
     public ArrayList<StudentEnrolment> getOne(String sidOrName, String cidOrName, String semester) {
         ArrayList<StudentEnrolment> aStudentEnrollList = new ArrayList<>();
         for (StudentEnrolment s : enrollList) {
             if ((s.getStudent().getId().equalsIgnoreCase(sidOrName) || s.getStudent().getName().equalsIgnoreCase(sidOrName))
                     && (s.getCourse().getId().equalsIgnoreCase(cidOrName) || s.getCourse().getName().equalsIgnoreCase(cidOrName))
-                    && s.getSemester().equals(semester)) {
+                    && s.getSemester().equalsIgnoreCase(semester)) {
                 aStudentEnrollList.add(s);
             }
         }
@@ -155,7 +155,7 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
         for (StudentEnrolment s : enrollList) {
             if ((s.getStudent().getId().equalsIgnoreCase(sidOrname)
                     || s.getStudent().getName().equalsIgnoreCase(sidOrname))
-                    && s.getSemester().equals(semester)) {
+                    && s.getSemester().equalsIgnoreCase(semester)) {
                 filteredList.add(s);
             }
         }
@@ -168,7 +168,7 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
         //filter out a list according to student's name/id and semester.
         for (StudentEnrolment s : enrollList) {
             if ((s.getCourse().getId().equalsIgnoreCase(cidOrname) || s.getCourse().getName().equalsIgnoreCase(cidOrname))
-                    && s.getSemester().equals(semester)) {
+                    && s.getSemester().equalsIgnoreCase(semester)) {
                 filteredList.add(s);
             }
         }
@@ -180,7 +180,7 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
         ArrayList<StudentEnrolment> filteredList = new ArrayList<>();
         //filter out a list according to student's name/id and semester.
         for (StudentEnrolment s : enrollList) {
-            if (s.getSemester().equals(semester)) {
+            if (s.getSemester().equalsIgnoreCase(semester)) {
                 filteredList.add(s);
             }
         }
@@ -250,11 +250,16 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
 
     /* Print ALL STUDENTS of 1 COURSES in 1 SEMESTER */
     public void printStudentsOfCourseSem(String cidOrName, String semester, int saveOption) {
+        String cid = "";
+        String cname = "";
         ArrayList<StudentEnrolment> filteredList = courseSemFilter(cidOrName, semester);
-        //Get course's info from the list
-        String cid = filteredList.get(0).getCourse().getId();
-        String cname = filteredList.get(0).getCourse().getName();
-
+        for (Course c : courseList) {
+            if (c.getId().equalsIgnoreCase(cidOrName) || c.getName().equalsIgnoreCase(cidOrName)) {
+                //Get course's info from the list
+                cid = c.getId();
+                cname = c.getName();
+            }
+        }
         // saveOption = 1:only printing
         if (saveOption == 1) {
             System.out.printf("* %s (%s) - Enrolled Students:\n", cid, cname);

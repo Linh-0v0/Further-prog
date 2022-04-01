@@ -73,7 +73,7 @@
 
 *Mon-03/28/2022
     - Need to Add "not the right csv format"
-    - When list of the required result is empty, do not ask for the export to CSV
+    - When list of the required result is empty, do not ask for the export to CSV: NO NEED
     - When data result not found, ask for continue or exit?
 
 

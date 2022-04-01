@@ -53,20 +53,6 @@ public class CsvHandle extends Menu{
         }
     }
 
-    public static void addDeleteInCsv(String[] data) {
-        try {
-            FileWriter outputFile = new FileWriter(filePathRead, true);
-            CSVWriter writer = new CSVWriter(outputFile, CSVWriter.DEFAULT_SEPARATOR,
-                    CSVWriter.NO_QUOTE_CHARACTER,
-                    CSVWriter.DEFAULT_ESCAPE_CHARACTER,
-                    CSVWriter.DEFAULT_LINE_END);
-
-            writer.writeNext(data);
-            writer.close();
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        }
-    }
 
     private static StudentEnrolment createEnrolment(String[] metadata) {
         String sid = metadata[0];

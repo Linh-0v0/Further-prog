@@ -1,13 +1,11 @@
 package App;
 
 import DataProcessing.ValidateInput;
-import Models.StudentEnrolment;
 import Models.StudentEnrolmentList;
 import Utils.DataAvailableCheck;
 import Utils.RegexCheck;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 
@@ -29,7 +27,7 @@ public class Menu {
     public static String exportedCsvStrPath() {
         // Csv exported path
         String file = new File("src/main/resources/CsvData/data-exported.csv").getAbsolutePath();
-        return filePathExport;
+        return file;
     }
 
     final protected static StudentEnrolmentList enrollManager = new StudentEnrolmentList();
@@ -92,6 +90,7 @@ public class Menu {
                         sem = input.nextLine(); //checke if the semester's in the Db
                         sem = dataCheck.semAvail(sem);
                         enrollManager.addEnrolment(sid, cid, sem);
+                        endProgram(twoChoices);
                         break;
                     }
                     case 2 -> {
@@ -111,6 +110,7 @@ public class Menu {
                         //saveOption = 1: only printing
                         enrollManager.printCoursesOfStudentSem(sid, sem, 1);
                         enrollManager.updateEnrolment(sid, cid, sem, option);
+                        endProgram(twoChoices);
                         break;
                     }
                 }
@@ -129,23 +129,27 @@ public class Menu {
                         System.out.println("");
                         System.out.print("Enter student ID or Name: ");
                         sid = input.nextLine();
+                        dataCheck.studentAvail(sid);
                         System.out.print("Enter semester: ");
                         sem = input.nextLine();
+                        dataCheck.semAvail(sem);
                         enrollManager.printCoursesOfStudentSem(sid, sem, 1);
                         break;
                     case 2:
                         /* case 2: all students of 1 course in 1 semester */
                         System.out.print("Enter course ID or Name: ");
                         cid = input.nextLine();
+                        dataCheck.courseAvail(cid);
                         System.out.print("Enter semester: ");
                         sem = input.nextLine();
+                        dataCheck.semAvail(sem);
                         enrollManager.printStudentsOfCourseSem(cid, sem, 1);
                         break;
                     case 3:
                         /* case3: all courses offered in 1 semester */
-                        ArrayList<StudentEnrolment> enrollList = enrollManager.getAll();
                         System.out.print("Enter semester: ");
                         sem = input.nextLine();
+                        dataCheck.semAvail(sem);
                         enrollManager.printCoursesOfSem(sem, 1);
                         break;
                 }
@@ -153,7 +157,7 @@ public class Menu {
         }
 
         if (action == 2) {
-            //Print data
+            //action = 2: when user choose to Print data
             System.out.print("\nWould you like to save the above data in a CSV report?");
             int choice = inputValidate.validateIntInput(twoChoices, "\n1 is Yes, 2 is No. \nYour choice: ");
             if (choice == 1) {
