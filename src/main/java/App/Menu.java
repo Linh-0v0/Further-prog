@@ -1,11 +1,13 @@
 package App;
 
-import DataProcessing.ValidateInput;
+import Utils.ValidateInput;
 import Models.StudentEnrolmentList;
 import Utils.DataAvailableCheck;
 import Utils.RegexCheck;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Scanner;
 
 
@@ -50,7 +52,7 @@ public class Menu {
                 System.out.println("Now reading the default Csv File :)\n");
             }
             case 2 -> {
-                System.out.print("Paste your Csv file path here (e.g: D:\\directoryname\\testing\\abc.txt: ");
+                System.out.print("Paste your Csv file path here (e.g: D:\\directoryname\\testing\\abc.csv: ");
                 filePathRead = input.nextLine();
                 File f = new File(filePathRead);
                 //check if file exist
@@ -83,12 +85,15 @@ public class Menu {
                         System.out.print("Enter student ID or Name: ");
                         sid = input.nextLine();
                         sid = dataCheck.studentAvail(sid); //check if the student is already in the DB
+                        sid = sid.toUpperCase();
                         System.out.print("Enter course ID or Name: ");
                         cid = input.nextLine();
                         cid = dataCheck.courseAvail(cid); //check if the course's in the DB
+                        cid = cid.toUpperCase();
                         System.out.print("Enter semester: ");
                         sem = input.nextLine(); //checke if the semester's in the Db
                         sem = dataCheck.semAvail(sem);
+                        sem = sem.toUpperCase();
                         enrollManager.addEnrolment(sid, cid, sem);
                         endProgram(twoChoices);
                         break;
@@ -100,12 +105,15 @@ public class Menu {
                         System.out.print("Enter student ID or Name: ");
                         sid = input.nextLine();
                         sid = dataCheck.studentAvail(sid); //check if the student is already in the DB
+                        sid = sid.toUpperCase();
                         System.out.print("Enter course ID or Name: ");
                         cid = input.nextLine();
                         cid = dataCheck.courseAvail(cid); //check if the course's in the DB
+                        cid = cid.toUpperCase();
                         System.out.print("Enter semester: ");
                         sem = input.nextLine(); //checke if the semester's in the Db
                         sem = dataCheck.semAvail(sem);
+                        sem = sem.toUpperCase();
                         //list all courses of a student in a semester
                         //saveOption = 1: only printing
                         enrollManager.printCoursesOfStudentSem(sid, sem, 1);
@@ -130,9 +138,11 @@ public class Menu {
                         System.out.print("Enter student ID or Name: ");
                         sid = input.nextLine();
                         dataCheck.studentAvail(sid);
+                        sid = sid.toUpperCase();
                         System.out.print("Enter semester: ");
                         sem = input.nextLine();
                         dataCheck.semAvail(sem);
+                        sem = sem.toUpperCase();
                         enrollManager.printCoursesOfStudentSem(sid, sem, 1);
                         break;
                     case 2:
@@ -140,9 +150,11 @@ public class Menu {
                         System.out.print("Enter course ID or Name: ");
                         cid = input.nextLine();
                         dataCheck.courseAvail(cid);
+                        cid = cid.toUpperCase();
                         System.out.print("Enter semester: ");
                         sem = input.nextLine();
                         dataCheck.semAvail(sem);
+                        sem = sem.toUpperCase();
                         enrollManager.printStudentsOfCourseSem(cid, sem, 1);
                         break;
                     case 3:
@@ -150,6 +162,7 @@ public class Menu {
                         System.out.print("Enter semester: ");
                         sem = input.nextLine();
                         dataCheck.semAvail(sem);
+                        sem = sem.toUpperCase();
                         enrollManager.printCoursesOfSem(sem, 1);
                         break;
                 }
@@ -191,6 +204,7 @@ public class Menu {
                     case 3 -> enrollManager.printCoursesOfSem(sem, 2);
                 }
                 System.out.printf("Data has been saved to:\n  %s", exportedCsvStrPath());
+                endProgram(twoChoices);
             } else {
                 endProgram(twoChoices);
             }

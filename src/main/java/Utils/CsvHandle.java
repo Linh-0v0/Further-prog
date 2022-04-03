@@ -1,17 +1,13 @@
-package DataProcessing;
+package Utils;
 
 import App.Menu;
 import Models.Course;
 import Models.Student;
 import Models.StudentEnrolment;
-import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
-import com.opencsv.exceptions.CsvException;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class CsvHandle extends Menu{
     /* Read CSV line */

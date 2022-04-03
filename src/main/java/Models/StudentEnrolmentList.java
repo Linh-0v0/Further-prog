@@ -1,11 +1,9 @@
 package Models;
 
-import App.Menu;
-import DataProcessing.CsvHandle;
+import Utils.CsvHandle;
 import Interface.StudentEnrolmentManager;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 
 public class StudentEnrolmentList implements StudentEnrolmentManager {
@@ -219,6 +217,7 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
     public void printCoursesOfStudentSem(String sidOrName, String semester, int saveOption) {
         String sid = "";
         String sname = "";
+        ArrayList<String[]> data = new ArrayList<>();
         ArrayList<StudentEnrolment> filteredList = studentSemFilter(sidOrName, semester);
         //Get student's info from the list
         for (Student s : studentList) {
@@ -239,7 +238,6 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
             }
             //saveOption = 2:Save to Csv file
         } else {
-            ArrayList<String[]> data = new ArrayList<>();
             for (StudentEnrolment s : filteredList) {
                 String[] metadata = {s.getCourse().getId(), s.getCourse().getName(), s.getCourse().getCredit_num()};
                 data.add(metadata);
@@ -252,6 +250,7 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
     public void printStudentsOfCourseSem(String cidOrName, String semester, int saveOption) {
         String cid = "";
         String cname = "";
+        ArrayList<String[]> data = new ArrayList<>();
         ArrayList<StudentEnrolment> filteredList = courseSemFilter(cidOrName, semester);
         for (Course c : courseList) {
             if (c.getId().equalsIgnoreCase(cidOrName) || c.getName().equalsIgnoreCase(cidOrName)) {
@@ -272,7 +271,6 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
             }
             //saveOption = 2:Save to Csv file
         } else {
-            ArrayList<String[]> data = new ArrayList<>();
             for (StudentEnrolment s : filteredList) {
                 String[] metadata = {s.getStudent().getId(), s.getStudent().getName(),
                         s.getStudent().getBirthday()};
@@ -284,6 +282,7 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
 
     /* Print ALL COURSES in 1 SEMESTER */
     public void printCoursesOfSem(String semester, int saveOption) {
+        ArrayList<String[]> data = new ArrayList<>();
         ArrayList<StudentEnrolment> filteredList = semFilter(semester);
         // saveOption = 1:only printing
         if (saveOption == 1) {
@@ -297,7 +296,6 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
             }
             //saveOption = 2:Save to Csv file
         } else {
-            ArrayList<String[]> data = new ArrayList<>();
             for (StudentEnrolment s : filteredList) {
                 String[] metadata = {s.getCourse().getId(), s.getCourse().getName(), s.getCourse().getCredit_num()};
                 data.add(metadata);
