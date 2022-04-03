@@ -45,7 +45,7 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
         StudentEnrolment newEnrolment = new StudentEnrolment(student, course, semester);
 
         for (StudentEnrolment s : enrollList) {
-            if (sid == s.getStudent().getId() && cid == s.getCourse().getId() && s.getSemester() == semester) {
+            if (sid.equalsIgnoreCase(s.getStudent().getId()) && cid.equalsIgnoreCase(s.getCourse().getId()) && s.getSemester().equalsIgnoreCase(semester)) {
                 System.out.println("The student has already been enrolled!");
                 isEnrolled = true;
                 break;
@@ -100,9 +100,9 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
     @Override
     /* Update enrolment of a student */
     public void updateEnrolment(String idOrName, String cidOrName, String semester, int option) {
+        boolean isEnrolled = false;
         //Get all the Course's Enrolments of The Student
         ArrayList<StudentEnrolment> filteredList = studentSemFilter(idOrName, semester);
-        boolean isEnrolled = false;
         //check if the student is already added to the Course
         for (StudentEnrolment s : filteredList) {
             if (s.getCourse().getId().equalsIgnoreCase(cidOrName) || s.getCourse().getName().equalsIgnoreCase(cidOrName)) {
@@ -112,13 +112,13 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
         // 1: add new course , 2: delete course
         if (option == 1) {
             if (isEnrolled == true) {
-                System.out.println("The student is already enrolled in the course and this semester.");
+                System.out.println("The student is already enrolled in the course in this semester.");
             } else {
                 addEnrolment(idOrName, cidOrName, semester);
             }
         } else {
             if (isEnrolled == false) {
-                System.out.println("The student does not enroll in the course and this semester.");
+                System.out.println("The student has not enrolled in the course in this semester.");
             } else {
                 deleteEnrolment(idOrName, cidOrName, semester);
             }
@@ -163,7 +163,7 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
     /* Filter out an enrollment list of the REQUIRED COURSES and SEMESTER*/
     public ArrayList<StudentEnrolment> courseSemFilter(String cidOrname, String semester) {
         ArrayList<StudentEnrolment> filteredList = new ArrayList<>();
-        //filter out a list according to student's name/id and semester.
+        //filter out a list according to course's name/id and semester.
         for (StudentEnrolment s : enrollList) {
             if ((s.getCourse().getId().equalsIgnoreCase(cidOrname) || s.getCourse().getName().equalsIgnoreCase(cidOrname))
                     && s.getSemester().equalsIgnoreCase(semester)) {
@@ -176,7 +176,7 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
     /* Filter out an enrollment list of the REQUIRED SEMESTER */
     public ArrayList<StudentEnrolment> semFilter(String semester) {
         ArrayList<StudentEnrolment> filteredList = new ArrayList<>();
-        //filter out a list according to student's name/id and semester.
+        //filter out a list according to semester.
         for (StudentEnrolment s : enrollList) {
             if (s.getSemester().equalsIgnoreCase(semester)) {
                 filteredList.add(s);

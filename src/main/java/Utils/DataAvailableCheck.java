@@ -13,7 +13,6 @@ public class DataAvailableCheck extends StudentEnrolmentList {
     public String studentAvail(String sidOrName) {
         String sid = "";
         String sname = "";
-        String date = "";
         boolean enrolled = false;
         HashSet<Student> studentList = super.allStudents();
         Scanner input = new Scanner(System.in);
