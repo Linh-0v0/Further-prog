@@ -216,7 +216,6 @@ public class Menu {
 
     public static void endProgram(int[] twoChoices) {
         System.out.println("***************************************");
-        System.out.println("Thanks for using the app!");
         int runChoice = inputValidate.validateIntInput(twoChoices, "Would you like to continue running the " +
                 "app or exit?  \nEnter 1 for rerun, 2 for exit: ");
         switch (runChoice) {
