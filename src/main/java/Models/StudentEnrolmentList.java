@@ -46,7 +46,7 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
 
         for (StudentEnrolment s : enrollList) {
             if (sid.equalsIgnoreCase(s.getStudent().getId()) && cid.equalsIgnoreCase(s.getCourse().getId()) && s.getSemester().equalsIgnoreCase(semester)) {
-                System.out.println("The student has already been enrolled!");
+                System.out.println("The student has already been enrolled!\n");
                 isEnrolled = true;
                 break;
             }
@@ -84,7 +84,7 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
             if ((sid.equalsIgnoreCase(s.getStudent().getId())) && (cid.equalsIgnoreCase(s.getCourse().getId()))
                     && (semester.equalsIgnoreCase(s.getSemester()))) {
                 enrollList.remove(s);
-                System.out.println("The student has now left the course.");
+                System.out.println("The student has now left the course.\n");
                 notEnrolled = true;
                 break;
             }
