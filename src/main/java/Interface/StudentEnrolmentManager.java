@@ -15,7 +15,7 @@ public interface StudentEnrolmentManager {
     void deleteEnrolment(String sidOrName, String cidOrName, String semester);
 
     /* Get enrolment of a student */
-    ArrayList<StudentEnrolment> getOne(String sidOrName, String cidOrName, String semester);
+    ArrayList<StudentEnrolment> getOne(String sidOrName, String semester);
 
     /* Get all enrollment */
     ArrayList<StudentEnrolment> getAll();

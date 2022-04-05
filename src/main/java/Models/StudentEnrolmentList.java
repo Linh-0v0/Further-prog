@@ -127,11 +127,10 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
 
     @Override
     /* Get one enrolment */
-    public ArrayList<StudentEnrolment> getOne(String sidOrName, String cidOrName, String semester) {
+    public ArrayList<StudentEnrolment> getOne(String sidOrName, String semester) {
         ArrayList<StudentEnrolment> aStudentEnrollList = new ArrayList<>();
         for (StudentEnrolment s : enrollList) {
             if ((s.getStudent().getId().equalsIgnoreCase(sidOrName) || s.getStudent().getName().equalsIgnoreCase(sidOrName))
-                    && (s.getCourse().getId().equalsIgnoreCase(cidOrName) || s.getCourse().getName().equalsIgnoreCase(cidOrName))
                     && s.getSemester().equalsIgnoreCase(semester)) {
                 aStudentEnrollList.add(s);
             }
